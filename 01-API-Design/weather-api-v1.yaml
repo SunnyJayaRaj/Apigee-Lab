@@ -1,0 +1,31 @@
+openapi: 3.0.0
+info:
+  title: Sunny's Weather Proxy
+  description: A mock API design for my first Apigee proxy.
+  version: 1.0.0
+servers:
+  - url: https://api.example.com/v1
+paths:
+  /weather:
+    get:
+      summary: Get current weather
+      parameters:
+        - name: city
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  temperature:
+                    type: integer
+                    example: 28
+                  condition:
+                    type: string
+                    example: "Sunny"
