@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SpikeArrest async="false" continueOnError="false" enabled="true" name="Spike-Arrest-Protection">
+    <DisplayName>Spike Arrest Protection</DisplayName>
+    <Properties/>
+    <Rate>12pm</Rate>
+    <Identifier ref="request.header.x-forwarded-for"/>
+</SpikeArrest>
