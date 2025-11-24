@@ -5,5 +5,5 @@
     <Allow count="2000"/>
     <Interval>1</Interval>
     <TimeUnit>month</TimeUnit>
-    <Identifier ref="request.queryparam.apikey"/>
+    <Identifier ref="client_id"/>
 </Quota>
