@@ -12,11 +12,12 @@ Welcome to my digital laboratory! This repository documents my journey to master
 
 ## 📂 Repository Structure
 
-| Folder | Description |
-| :--- | :--- |
-| **`01-API-Design`** | **Design-First:** OpenAPI (Swagger) Specifications defining the API contracts. |
-| **`02-Proxies`** | *(Coming Soon)* XML Proxy bundles and flow logic. |
-| **`03-Security`** | *(Coming Soon)* OAuth, API Keys, and Spike Arrest policies. |
+| Folder | Description | Status |
+| :--- | :--- | :--- |
+| **`01-API-Design`** | OpenAPI (Swagger) Specs defining the API contracts. | ✅ Done |
+| **`02-Mediation`** | Transformation logic (XML to JSON). | ✅ Done |
+| **`03-Security`** | Spike Arrests and API Key Verification. | ✅ Done |
+| **`04-Monetization`** | Quota policies for different user tiers. | ✅ Done |
 
 ## 🚀 Current Focus: Design First
 I am currently focusing on the **OpenAPI Specification 3.0**. You can find my latest weather API design in the `01-API-Design` folder.
