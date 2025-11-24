@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Quota async="false" continueOnError="false" enabled="true" name="Quota-Silver-Tier">
+    <DisplayName>Quota Silver Tier</DisplayName>
+    <Properties/>
+    <Allow count="2000"/>
+    <Interval>1</Interval>
+    <TimeUnit>month</TimeUnit>
+    <Identifier ref="request.queryparam.apikey"/>
+</Quota>
