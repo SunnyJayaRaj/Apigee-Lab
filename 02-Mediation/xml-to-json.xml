@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<XMLToJSON async="false" continueOnError="false" enabled="true" name="XML-to-JSON-Conversion">
+    <DisplayName>XML to JSON Conversion</DisplayName>
+    <Properties/>
+    <Options>
+        <RecognizeNumber>true</RecognizeNumber>
+        <RecognizeBoolean>true</RecognizeBoolean>
+        <IdentifyNull>true</IdentifyNull>
+    </Options>
+    <Source>response</Source>
+    <OutputVariable>response</OutputVariable>
+</XMLToJSON>
