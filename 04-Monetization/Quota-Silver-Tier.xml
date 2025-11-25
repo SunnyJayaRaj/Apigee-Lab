@@ -2,7 +2,7 @@
 <Quota async="false" continueOnError="false" enabled="true" name="Quota-Silver-Tier">
     <DisplayName>Quota Silver Tier</DisplayName>
     <Properties/>
-    <Allow count="2000"/>
+    <Allow count="5000"/>
     <Interval>1</Interval>
     <TimeUnit>month</TimeUnit>
     <Identifier ref="client_id"/>
