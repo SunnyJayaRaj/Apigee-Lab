@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="1" name="weather-proxy">
+    <Basepaths>/weather-lab</Basepaths>
+    <ConfigurationVersion majorVersion="4.0" minorVersion="0"/>
+    <DisplayName>Sunny Weather Proxy</DisplayName>
+    <Description>My first proxy integrating Security, Mediation, and Traffic Management</Description>
+
+    <Policies>
+        <Policy>Spike-Arrest-Protection</Policy>
+        <Policy>Verify-API-Key</Policy>
+        <Policy>Quota-Silver-Tier</Policy>
+        <Policy>XML-to-JSON-Conversion</Policy>
+    </Policies>
+
+    <ProxyEndpoints>
+        <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
+    </ProxyEndpoints>
+
+    <TargetEndpoints>
+        <TargetEndpoint>target-endpoint-default</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>
