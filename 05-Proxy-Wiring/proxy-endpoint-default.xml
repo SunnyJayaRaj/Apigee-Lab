@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="proxy-endpoint-default">
+    <Description>Main entry point for the Weather API</Description>
+
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step><Name>Spike-Arrest-Protection</Name></Step>
+            <Step><Name>Verify-API-Key</Name></Step>
+            <Step><Name>Quota-Silver-Tier</Name></Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <Step><Name>XML-to-JSON-Conversion</Name></Step>
+        </Response>
+    </PostFlow>
+
+    <HTTPProxyConnection>
+        <BasePath>/weather-lab</BasePath>
+        <Properties/>
+    </HTTPProxyConnection>
+
+    <RouteRule name="default">
+        <TargetEndpoint>target-endpoint-default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
