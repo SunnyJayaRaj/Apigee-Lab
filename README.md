@@ -1,37 +1,52 @@
-# 🧪 Apigee Lab & API Playground
+# 🧪 Apigee Lab: Weather API Proxy
 
-**Status:** ✅ Completed (v1.0)
+![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)
 
-Welcome to my digital laboratory! This repository documents my journey to mastering **Google Cloud Apigee**. This project is a fully functional API Proxy bundle that demonstrates API security, traffic management, and data mediation.
+Welcome to my digital laboratory! This repository documents my journey to mastering **Google Cloud Apigee**. This project represents a fully functional API Proxy bundle that demonstrates enterprise-grade API security, traffic management, and data mediation.
 
-## 🛠 Tech Stack
+## 🚀 Project Overview
+This proxy acts as a managed gateway for a backend Weather Service. It enforces security policies and transforms data before it reaches the client.
+
+### 🛠 Tech Stack
 ![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 ![Apigee](https://img.shields.io/badge/Apigee-MX-red?style=for-the-badge)
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-6BA539?style=for-the-badge&logo=openapi-initiative&logoColor=white)
-![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+![XML](https://img.shields.io/badge/XML-Configuration-orange?style=for-the-badge)
 
-## 📂 Repository Structure & Logic
+## 📂 Architecture & Logic
 
-| Folder | Component | Function |
+The repository is structured to separate concerns (Security, Mediation, Monetization).
+
+| Component | Policy / File | Function |
 | :--- | :--- | :--- |
-| **`01-API-Design`** | `weather-api-v1.yaml` | OpenAPI 3.0 Spec defining the contract. |
-| **`02-Mediation`** | `XML-to-JSON` | Converts legacy XML backend responses to modern JSON. |
-| **`03-Security`** | `Spike-Arrest` | Protects against DDoS attacks (12pm rate limit). |
-| **`03-Security`** | `Verify-API-Key` | Authenticates client apps via query parameter. |
-| **`04-Monetization`** | `Quota-Silver` | Enforces a 2000 calls/month limit per user. |
-| **`05-Proxy-Wiring`** | **Endpoints** | Connects all policies into a logical execution flow. |
-| **Root** | `weather-proxy.xml` | The main configuration manifest for deployment. |
+| **Contract** | `01-API-Design` | **OpenAPI 3.0 Spec** defining the API surface and data models. |
+| **Security** | `Spike-Arrest` | **DDoS Protection:** Limits traffic spikes to protect backend infrastructure. |
+| **Security** | `Verify-API-Key` | **Authentication:** Validates client credentials via Query Parameter. |
+| **Governance** | `Quota-Silver` | **Monetization:** Enforces a hard limit of 2,000 calls/month per user. |
+| **Mediation** | `XML-to-JSON` | **Transformation:** Converts legacy XML backend responses to modern JSON. |
+| **Wiring** | `05-Proxy-Wiring` | **Flow Logic:** Chains policies together in the `PreFlow` and `PostFlow`. |
 
-## 🔄 Proxy Logic Flow
-1.  **Inbound Request:** Client calls `/weather-lab`.
-2.  **PreFlow:**
-    * ⛔️ **Spike Arrest:** Stops traffic surges.
-    * 🔑 **Verify Key:** Checks `?apikey=...`.
-    * 📉 **Quota:** Deducts 1 credit from the user's Silver Tier.
-3.  **Target:** Request forwarded to `api.example.com`.
-4.  **PostFlow:**
-    * ✨ **XML to JSON:** Backend response is formatted for the client.
-5.  **Response:** Client receives clean JSON data.
+## 🔄 Execution Flow
+When a client makes a request to `/weather-lab`:
+
+1.  **Request Ingest:** Apigee intercepts the call.
+2.  **PreFlow Logic:**
+    * ⛔️ **Spike Arrest** checks for traffic surges.
+    * 🔑 **API Key Validation** ensures the user is authorized.
+    * 📉 **Quota Check** deducts 1 credit from the "Silver Tier" bucket.
+3.  **Backend Routing:** Request is forwarded to `https://api.example.com/v1`.
+4.  **PostFlow Logic:**
+    * ✨ **XML to JSON** runs on the response to sanitize the output.
+5.  **Final Response:** Client receives clean JSON data.
 
 ---
-*Created by [Sunny JayaRaj](https://sunnyjayaraj.github.io)*
+### ☁️ Deployment
+*This project follows the standard Apigee XML structure.*
+To deploy this bundle:
+1.  Zip the root directory.
+2.  Import as a new Proxy in the **Google Cloud Apigee Console**.
+3.  Deploy to the `test` environment.
+
+---
+*Developed by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
