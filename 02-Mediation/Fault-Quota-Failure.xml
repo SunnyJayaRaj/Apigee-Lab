@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="Fault-Quota-Failure">
+    <DisplayName>Fault Quota Failure</DisplayName>
+    <Set>
+        <Payload contentType="application/json">
+            {"status": 429, "message": "Whoops! You used all your Silver Tier credits.", "more_info": "Upgrade at api.weather-lab.com"}
+        </Payload>
+        <StatusCode>429</StatusCode>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>
