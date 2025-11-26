@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ResponseCache async="false" continueOnError="false" enabled="true" name="Response-Cache-Standard">
+    <DisplayName>Response Cache Standard</DisplayName>
+    <Properties/>
+    <CacheKey>
+        <KeyFragment ref="request.uri" />
+    </CacheKey>
+    <Scope>Global</Scope>
+    <ExpirySettings>
+        <TimeoutInSec>600</TimeoutInSec> </ExpirySettings>
+</ResponseCache>
