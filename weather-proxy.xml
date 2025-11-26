@@ -12,6 +12,7 @@
         <Policy>Response-Cache-Standard</Policy>
         <Policy>Quota-Silver-Tier</Policy>
         <Policy>XML-to-JSON-Conversion</Policy>
+        <Policy>Fault-Quota-Failure</Policy>
     </Policies>
 
     <ProxyEndpoints>
