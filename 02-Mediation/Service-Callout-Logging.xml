@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="true" enabled="true" name="Service-Callout-Logging">
+    <DisplayName>Service Callout Logging</DisplayName>
+    <Properties/>
+    <Request clearPayload="true" variable="myLogRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+        <Set>
+            <QueryParams>
+                <QueryParam name="event">weather_checked</QueryParam>
+                <QueryParam name="user_city">{request.queryparam.city}</QueryParam>
+            </QueryParams>
+            <Verb>GET</Verb>
+        </Set>
+    </Request>
+    <Response>logResponse</Response>
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>https://mocktarget.apigee.net/echo</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>
