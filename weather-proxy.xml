@@ -13,6 +13,7 @@
         <Policy>Quota-Silver-Tier</Policy>
         <Policy>XML-to-JSON-Conversion</Policy>
         <Policy>Fault-Quota-Failure</Policy>
+        <Policy>Service-Callout-Logging</Policy>
     </Policies>
 
     <ProxyEndpoints>
