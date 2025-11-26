@@ -5,7 +5,7 @@
     <PreFlow name="PreFlow">
         <Request>
             <Step><Name>Spike-Arrest-Protection</Name></Step>
-            <Step><Name>Verify-API-Key</Name></Step>
+            <Step><Name>Verify-JWT-Protection</Name></Step> 
             <Step><Name>Quota-Silver-Tier</Name></Step>
         </Request>
         <Response/>
