@@ -27,7 +27,6 @@
             <Step><Name>Spike-Arrest-Protection</Name></Step>
             <Step><Name>Verify-JWT-Protection</Name></Step> 
             <Step><Name>Quota-Silver-Tier</Name></Step>
-
             <Step><Name>Response-Cache-Standard</Name></Step>
         </Request>
         <Response/>
@@ -37,7 +36,7 @@
         <Request/>
         <Response>
             <Step><Name>Response-Cache-Standard</Name></Step>
-            
+            <Step><Name>Service-Callout-Logging</Name></Step>
             <Step><Name>XML-to-JSON-Conversion</Name></Step>
         </Response>
     </PostFlow>
