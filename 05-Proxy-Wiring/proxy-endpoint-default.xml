@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ProxyEndpoint name="proxy-endpoint-default">
     <Description>Main entry point for the Weather API</Description>
+    
+    <FaultRules>
+        <FaultRule name="QuotaErrors">
+            <Condition>(fault.name = "QuotaViolation")</Condition>
+            <Step>
+                 <Name>Fault-Quota-Failure</Name>
+            </Step>
+        </FaultRule>
+    </FaultRules>
 
     <!--
     <PreFlow name="PreFlow">
@@ -12,7 +21,7 @@
         <Response/>
     </PreFlow>
     -->
-
+    
     <PreFlow name="PreFlow">
         <Request>
             <Step><Name>Spike-Arrest-Protection</Name></Step>
