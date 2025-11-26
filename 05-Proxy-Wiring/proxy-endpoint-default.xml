@@ -2,6 +2,17 @@
 <ProxyEndpoint name="proxy-endpoint-default">
     <Description>Main entry point for the Weather API</Description>
 
+    <!--
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step><Name>Spike-Arrest-Protection</Name></Step>
+            <Step><Name>Verify-API-Key</Name></Step> 
+            <Step><Name>Quota-Silver-Tier</Name></Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    -->
+
     <PreFlow name="PreFlow">
         <Request>
             <Step><Name>Spike-Arrest-Protection</Name></Step>
