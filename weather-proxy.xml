@@ -9,6 +9,7 @@
         <Policy>Spike-Arrest-Protection</Policy>
         <Policy>Verify-API-Key</Policy>
         <Policy>Verify-JWT-Protection</Policy>
+        <Policy>Response-Cache-Standard</Policy>
         <Policy>Quota-Silver-Tier</Policy>
         <Policy>XML-to-JSON-Conversion</Policy>
     </Policies>
