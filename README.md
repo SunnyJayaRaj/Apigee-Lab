@@ -47,38 +47,63 @@ When a client request hits the **Weather Shield**:
     * ✨ **Transform:** Converts backend XML to clean JSON.
 5.  **Response:** Client receives the final payload.
 
-### 🧩 Visual Diagram
-```mermaid
-graph TD
-    Client([👤 Client]) -->|GET /weather-lab| Apigee[Google Cloud Apigee]
-    
-    subgraph PreFlow [Request Pipeline]
-        Spike{⛔️ Spike Arrest} -->|Pass| JWT{🛡️ Verify JWT}
-        JWT -->|Valid| Quota{📉 Check Quota}
-        Quota -->|Limit OK| CacheCheck{⚡️ Cache Hit?}
-    end
-    
-    subgraph External [External Systems]
-        Backend[☁️ Weather API]
-        LogServer[📝 Audit Log Server]
-    end
-    
-    subgraph PostFlow [Response Pipeline]
-        CachePop[💾 Populate Cache] --> LogCall[📡 Service Callout]
-        LogCall --> Transform[✨ XML to JSON]
-    end
+<img width="2816" height="1536" alt="Project_1_Image" src="https://github.com/user-attachments/assets/0321a1d5-2432-48a1-98b6-b0c2c2af756d" />
 
+### 🧩 API Request Flow [Visual Diagram for better Explanation]
+
+The following diagram illustrates the request and response lifecycle for the `/weather-lab` endpoint managed by Google Cloud Apigee.
+```mermaid
+flowchart TB
+ subgraph PreFlow["Request Pipeline"]
+    direction TB
+    Spike{"⛔️ Spike Arrest"}
+    JWT{"🛡️ Verify JWT"}
+    Quota{"📉 Check Quota"}
+    CacheCheck{"⚡️ Cache Hit?"}
+ end
+ subgraph External["External Systems"]
+    Backend["☁️ Weather API"]
+    LogServer["📝 Audit Log Server"]
+ end
+ subgraph PostFlow["Response Pipeline"]
+    direction TB
+    CachePop["💾 Populate Cache"]
+    LogCall["📡 Service Callout"]
+    Transform["✨ XML to JSON"]
+ end
+
+    Client(["👤 Client"]) -- "GET /weather-lab" --> Apigee["Google Cloud Apigee"]
     Apigee --> Spike
-    CacheCheck -->|No| Backend
-    CacheCheck -->|Yes| LogCall
-    Backend -->|Response| CachePop
+    Spike -- Pass --> JWT
+    JWT -- Valid --> Quota
+    Quota -- Limit OK --> CacheCheck
+    CacheCheck -- No --> Backend
+    CacheCheck -- Yes --> LogCall
+    Backend -- Response --> CachePop
+    CachePop --> LogCall
+    LogCall --> Transform
+    Transform -- JSON Payload --> Client
+    LogCall -. Async .-> LogServer
     
-    LogCall -.->|Async Logging| LogServer
-    Transform -->|JSON Payload| Client
-    
-    style Apigee fill:#f9f,stroke:#333,stroke-width:2px
-    style Backend fill:#bbf,stroke:#333,stroke-width:2px
+    style Apigee fill:#f9f,stroke:#333
+    style Backend fill:#bbf,stroke:#333
 ```
+### 🌊 Flow Description of Visual Diagram
+
+1.  **Request Pipeline (PreFlow):**
+    * **Traffic Management:** The proxy first applies a **Spike Arrest** policy to protect against traffic surges.
+    * **Security:** It validates the user's identity using **JWT Verification**.
+    * **Quota Enforcement:** A **Quota** check ensures the client hasn't exceeded their API limits.
+    * **Caching:** The system checks if a valid response already exists in the cache to reduce latency.
+
+2.  **External Routing:**
+    * If there is a **Cache Miss**, the request is routed to the backend **Weather API**.
+    * If there is a **Cache Hit**, the backend call is bypassed.
+
+3.  **Response Pipeline (PostFlow):**
+    * **Cache Population:** Fresh responses from the backend are stored in the cache for future use.
+    * **Logging:** An asynchronous **Service Callout** sends transaction details to the Audit Log Server without blocking the main response.
+    * **Transformation:** Finally, the XML response from the backend is converted to **JSON** before being sent back to the client.
 ---
 ### ☁️ Deployment
 
