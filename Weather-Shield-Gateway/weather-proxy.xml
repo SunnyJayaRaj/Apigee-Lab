@@ -7,7 +7,8 @@
 
     <Policies>
         <Policy>Spike-Arrest-Protection</Policy>
-        <Policy>Verify-API-Key</Policy>
+        <Policy>AM-Set-Secret-Key</Policy>
+   <!-- <Policy>Verify-API-Key</Policy> -->
         <Policy>Verify-JWT-Protection</Policy>
         <Policy>Response-Cache-Standard</Policy>
         <Policy>Quota-Silver-Tier</Policy>
