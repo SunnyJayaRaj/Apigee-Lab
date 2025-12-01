@@ -5,7 +5,7 @@
     <Source>request.header.Authorization</Source>
     <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
     <SecretKey>
-        <Value>MySecretSigningKey123</Value>
+        <Value ref="private.jwt_secret_key"/>
     </SecretKey>
     <Subject>weather-app-user</Subject>
     <Issuer>urn://apigee-lab-auth</Issuer>
