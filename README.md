@@ -105,14 +105,38 @@ flowchart TB
     * **Logging:** An asynchronous **Service Callout** sends transaction details to the Audit Log Server without blocking the main response.
     * **Transformation:** Finally, the XML response from the backend is converted to **JSON** before being sent back to the client.
 ---
-### ☁️ Deployment
+### ☁️ Deployment Guide
 
-*This bundle is structured for Portfolio/Learning. For production deployment, reorganise into a standard `apiproxy/` structure.*
+*This bundle is structured for Portfolio/Learning purposes. To deploy to Google Cloud Apigee X:*
 
-To deploy this specific project:
-1.  Navigate to the `Weather-Shield-Gateway` folder.
-2.  Zip the contents (ensure `weather-proxy.xml` is at the root of the zip).
-3.  Import as a new Proxy in **Google Cloud Apigee Console**.
-4.  Deploy to the test environment.
+1.  **Prepare the Artifact:**
+    * Create a local folder named `apiproxy`.
+    * Inside it, create folders: `proxies`, `targets`, `policies`.
+    * **Copy** all XML policies from `02`, `03`, `04` into `policies/`.
+    * **Copy** endpoints from `05` into `proxies/` and `targets/`.
+    * **Copy** `weather-proxy.xml` to the root of `apiproxy/`.
+    * **Zip** the `apiproxy` folder (Result: `apiproxy.zip`).
+
+2.  **Upload to Cloud:**
+    * Go to **Google Cloud Console > Apigee > API Proxies**.
+    * Click **Create New** -> **Upload Proxy Bundle**.
+    * Select `apiproxy.zip`.
+
+3.  **Deploy:**
+    * Select the **eval** environment.
+    * Click **Deploy**.
+
+4.  **Verify:**
+    * **Step 1:** Generate a test JWT at [jwt.io](https://jwt.io) using the secret: `MySecretSigningKey123`.
+    * **Step 2 (Option A - Postman):**
+        * Create a **GET** request to `https://[YOUR-URL]/weather-lab?city=London`.
+        * Go to **Headers** tab.
+        * Add Key: `Authorization`, Value: `Bearer <PASTE_YOUR_JWT>`.
+        * Click **Send**.
+    * **Step 2 (Option B - Terminal):**
+        * Call the endpoint:
+        ```bash
+        curl -H "Authorization: Bearer <JWT>" "https://[YOUR-URL]/weather-lab?city=London"
+        ```
 ---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
