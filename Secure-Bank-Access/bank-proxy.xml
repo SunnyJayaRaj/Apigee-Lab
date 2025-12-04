@@ -8,10 +8,10 @@
     </Policies>
 
     <ProxyEndpoints>
-        <ProxyEndpoint>default</ProxyEndpoint>
+        <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
     </ProxyEndpoints>
 
     <TargetEndpoints>
-        <TargetEndpoint>default</TargetEndpoint>
+        <TargetEndpoint>target-endpoint-default</TargetEndpoint>
     </TargetEndpoints>
 </APIProxy>
