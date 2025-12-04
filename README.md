@@ -150,4 +150,36 @@ This project implements the **OAuth 2.0 Client Credentials** flow to secure sens
 * **Scopes:** Controlling access levels (Read vs. Write).
 * **Edge Microgateway:** (Optional future goal).
 ---
+### 📐 Architecture Diagram: OAuth 2.0 Flow
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as 👤 Client (Postman)
+    participant Apigee as 🛡️ Apigee Edge
+    participant Auth as 🔐 OAuth Store
+    participant Backend as 🏦 Mock Backend
+
+    Note over Client, Auth: Phase 1: The Handshake (Get the Badge)
+    Client->>Apigee: POST /token (Client ID + Secret)
+    Apigee->>Auth: Validate Credentials
+    Auth-->>Apigee: Credentials Valid!
+    Apigee->>Auth: Generate Access Token
+    Auth-->>Apigee: Token: "z29t..."
+    Apigee-->>Client: 200 OK {access_token: "z29t...", expires_in: 1800}
+
+    Note over Client, Backend: Phase 2: The Access (Enter the Vault)
+    Client->>Apigee: GET /balance (Authorization: Bearer z29t...)
+    Apigee->>Apigee: Condition: /balance?
+    Apigee->>Auth: Verify Token "z29t..."
+    alt Token Invalid
+        Auth-->>Apigee: Error (Expired/Fake)
+        Apigee-->>Client: 401 Unauthorized
+    else Token Valid
+        Auth-->>Apigee: Success
+        Apigee->>Backend: Request Account Data
+        Backend-->>Apigee: JSON Response
+        Apigee-->>Client: 200 OK {"balance": 5000}
+    end
+```  
+---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
