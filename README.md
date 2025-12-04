@@ -156,24 +156,9 @@ This proxy uses **Conditional Flows** to handle two distinct operations in one e
 
 | Module | Folder | Function |
 | :--- | :--- | :--- |
-| **Contract** | `API-Design` | **OpenAPI 3.0 Spec** defining `/token` and `/balance` paths. |
-| **Security** | `Security` | **OAuthV2 Policies:** One for generating tokens, one for verifying them. |
-| **Wiring** | `Proxy-Wiring` | **Flow Logic:** Routes traffic based on URL (`/token` vs `/balance`). |
-
-### 🔄 Execution Flow
-This project implements the "Two-Step" OAuth dance:
-
-**Phase 1: The Handshake (POST `/token`)**
-1.  **Client:** Sends `client_id` and `client_secret`.
-2.  **Apigee:** Validates credentials against internal database.
-3.  **Response:** Returns a time-limited **Access Token** (e.g., `z29t...`).
-
-**Phase 2: The Access (GET `/balance`)**
-1.  **Client:** Sends request with header `Authorization: Bearer z29t...`.
-2.  **Apigee:** Intercepts request and verifies the token's signature and expiry.
-    * ⛔️ **Invalid:** Returns 401 Unauthorized immediately.
-    * ✅ **Valid:** Forwards request to the backend.
-3.  **Response:** Returns sensitive account data.
+| **Contract** | `01-API-Design` | **OpenAPI 3.0 Spec** defining `/token` and `/balance` paths. |
+| **Security** | `03-Security` | **OAuthV2 Policies:** One for generating tokens, one for verifying them. |
+| **Wiring** | `05-Proxy-Wiring` | **Flow Logic:** Routes traffic based on URL (`/token` vs `/balance`). |
 
 ### 🧩 Visual Diagram: OAuth 2.0 Flow
 ```mermaid
@@ -206,6 +191,25 @@ sequenceDiagram
         Apigee-->>Client: 200 OK {"balance": 5000}
     end
 ```  
+### 🌊 Flow Description
+
+The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pattern, separated into two distinct phases:
+
+**Phase 1: The Handshake (Authentication)**
+* **Trigger:** The Client `POST`s their Client ID and Secret to the `/token` endpoint.
+* **Validation:** Apigee checks these credentials against its internal Identity Store.
+* **Minting:** If valid, Apigee generates a cryptographically signed **Access Token** with a 30-minute expiration.
+* **Response:** The client receives the token (the "Badge") to use for future requests.
+
+**Phase 2: The Access (Authorization)**
+* **Gatekeeping:** The Client makes a `GET` request to the protected `/balance` endpoint, attaching the token in the `Authorization: Bearer` header.
+* **Verification:** The Proxy intercepts the request *before* it reaches the backend. It checks:
+    1.  Is the token signature valid?
+    2.  Has the token expired?
+    3.  Is the token revoked?
+* **Routing:**
+    * ⛔️ **Invalid:** The proxy returns `401 Unauthorized` immediately. The backend is never touched.
+    * ✅ **Valid:** The proxy forwards the request to the Banking Backend to retrieve account data.
 ---
 ### ☁️ Deployment Guide
 
@@ -214,8 +218,8 @@ sequenceDiagram
 1.  **Deploy the Proxy:**
     * Create a local folder named `apiproxy`.
     * Inside it, create folders: `proxies`, `targets`, `policies`.
-    * **Copy** all XML policies from `Security` into `policies/`.
-    * **Copy** endpoints from `Proxy-Wiring` into `proxies/` and `targets/`.
+    * **Copy** all XML policies from `03-Security` into `policies/`.
+    * **Copy** endpoints from `05-Proxy-Wiring` into `proxies/` and `targets/`.
     * **Copy** `bank-proxy.xml` to the root of `apiproxy/`.
     * **Zip** the `apiproxy` folder.
     * Upload to **Google Cloud Console** and deploy to `eval`.
