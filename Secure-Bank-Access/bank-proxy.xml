@@ -1,4 +1,16 @@
 <APIProxy revision="1" name="secure-bank-access">
     <DisplayName>Secure Bank Access</DisplayName>
     <Description>OAuth 2.0 Implementation Lab</Description>
+
+    <Policies>
+        <Policy>OAuth-Generate-Token</Policy>
+    </Policies>
+
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+
+    <TargetEndpoints>
+        <TargetEndpoint>default</TargetEndpoint>
+    </TargetEndpoints>
 </APIProxy>
