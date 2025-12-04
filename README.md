@@ -145,12 +145,37 @@ flowchart TB
 A simulation of a Banking API focused on **Identity & Access Management (IAM)**.
 This project implements the **OAuth 2.0 Client Credentials** flow to secure sensitive financial data.
 
-### 🎯 Key Learning Objectives
-* **OAuth 2.0:** Generating and Validating Access Tokens.
-* **Scopes:** Controlling access levels (Read vs. Write).
-* **Edge Microgateway:** (Optional future goal).
----
-### 📐 Architecture Diagram: OAuth 2.0 Flow
+### 🛠 Tech Stack
+![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
+![Apigee](https://img.shields.io/badge/Apigee-MX-red?style=for-the-badge)
+![OAuth2](https://img.shields.io/badge/Security-OAuth_2.0-blue?style=for-the-badge&logo=adguard&logoColor=white)
+![XML](https://img.shields.io/badge/XML-Configuration-orange?style=for-the-badge)
+
+### 📐 Architecture & Logic
+This proxy uses **Conditional Flows** to handle two distinct operations in one endpoint.
+
+| Module | Folder | Function |
+| :--- | :--- | :--- |
+| **Contract** | `API-Design` | **OpenAPI 3.0 Spec** defining `/token` and `/balance` paths. |
+| **Security** | `Security` | **OAuthV2 Policies:** One for generating tokens, one for verifying them. |
+| **Wiring** | `Proxy-Wiring` | **Flow Logic:** Routes traffic based on URL (`/token` vs `/balance`). |
+
+### 🔄 Execution Flow
+This project implements the "Two-Step" OAuth dance:
+
+**Phase 1: The Handshake (POST `/token`)**
+1.  **Client:** Sends `client_id` and `client_secret`.
+2.  **Apigee:** Validates credentials against internal database.
+3.  **Response:** Returns a time-limited **Access Token** (e.g., `z29t...`).
+
+**Phase 2: The Access (GET `/balance`)**
+1.  **Client:** Sends request with header `Authorization: Bearer z29t...`.
+2.  **Apigee:** Intercepts request and verifies the token's signature and expiry.
+    * ⛔️ **Invalid:** Returns 401 Unauthorized immediately.
+    * ✅ **Valid:** Forwards request to the backend.
+3.  **Response:** Returns sensitive account data.
+
+### 🧩 Visual Diagram: OAuth 2.0 Flow
 ```mermaid
 sequenceDiagram
     autonumber
@@ -181,5 +206,28 @@ sequenceDiagram
         Apigee-->>Client: 200 OK {"balance": 5000}
     end
 ```  
+---
+### ☁️ Deployment Guide
+
+*This bundle relies on Apigee's internal identity store (App/Product/Developer).*
+
+1.  **Deploy the Proxy:**
+    * Create a local folder named `apiproxy`.
+    * Inside it, create folders: `proxies`, `targets`, `policies`.
+    * **Copy** all XML policies from `Security` into `policies/`.
+    * **Copy** endpoints from `Proxy-Wiring` into `proxies/` and `targets/`.
+    * **Copy** `bank-proxy.xml` to the root of `apiproxy/`.
+    * **Zip** the `apiproxy` folder.
+    * Upload to **Google Cloud Console** and deploy to `eval`.
+
+2.  **Configure Infrastructure:**
+    * **API Product:** Create a Product named "Banking-Premium" (Access: Public, Scopes: All).
+    * **Developer:** Create a dummy developer (e.g., `fintech@example.com`).
+    * **App:** Create an App, select the Developer, and add the "Banking-Premium" Product.
+    * **Keys:** Copy the generated **Client ID** and **Client Secret**.
+
+3.  **Verify:**
+    * **Get Token:** POST your ID/Secret to `https://[YOUR-URL]/bank-v1/token`.
+    * **Access Data:** Use the returned token to GET `https://[YOUR-URL]/bank-v1/balance`.
 ---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
