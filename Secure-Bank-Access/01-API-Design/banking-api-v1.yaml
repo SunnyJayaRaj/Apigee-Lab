@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  title: Secure Bank Access API
+  description: An enterprise-grade API secured by OAuth 2.0 (Client Credentials).
+  version: 1.0.0
+servers:
+  - url: https://api.bank-lab.com/v1
+paths:
+  # 1. The "Front Desk" - Where you get your Badge (Token)
+  /token:
+    post:
+      summary: Generate Access Token
+      description: Exchange Client ID and Secret for an OAuth Bearer Token.
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  example: client_credentials
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+      responses:
+        '200':
+          description: Successful Token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: "ey...789"
+                  expires_in:
+                    type: integer
+                    example: 300
+  
+  # 2. The "Vault" - Requires the Badge (Token) to enter
+  /balance:
+    get:
+      summary: Get Account Balance
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Balance Retrieval
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account_id:
+                    type: string
+                    example: "123-456-789"
+                  currency:
+                    type: string
+                    example: "USD"
+                  amount:
+                    type: number
+                    example: 5400.50
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
