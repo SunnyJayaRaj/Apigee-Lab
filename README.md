@@ -140,7 +140,7 @@ flowchart TB
         ```
 ---
 ## 📂 Project 2: Secure-Bank-Access
-**Status:** 🚧 Active Development | **Path:** `./Secure-Bank-Access`
+**Status:** ✅ Completed (v1.0) | **Path:** `./Secure-Bank-Access`
 
 A simulation of a Banking API focused on **Identity & Access Management (IAM)**.
 This project implements the **OAuth 2.0 Client Credentials** flow to secure sensitive financial data.
