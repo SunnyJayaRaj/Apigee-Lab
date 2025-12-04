@@ -139,4 +139,15 @@ flowchart TB
         curl -H "Authorization: Bearer <JWT>" "https://[YOUR-URL]/weather-lab?city=London"
         ```
 ---
+## 📂 Project 2: Secure-Bank-Access
+**Status:** 🚧 Active Development | **Path:** `./Secure-Bank-Access`
+
+A simulation of a Banking API focused on **Identity & Access Management (IAM)**.
+This project implements the **OAuth 2.0 Client Credentials** flow to secure sensitive financial data.
+
+### 🎯 Key Learning Objectives
+* **OAuth 2.0:** Generating and Validating Access Tokens.
+* **Scopes:** Controlling access levels (Read vs. Write).
+* **Edge Microgateway:** (Optional future goal).
+---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
