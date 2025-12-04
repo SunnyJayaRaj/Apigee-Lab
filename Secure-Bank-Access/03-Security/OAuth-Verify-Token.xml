@@ -2,5 +2,6 @@
 <OAuthV2 async="false" continueOnError="false" enabled="true" name="OAuth-Verify-Token">
     <DisplayName>OAuth Verify Token</DisplayName>
     <Operation>VerifyAccessToken</Operation>
+    <AccessToken>request.header.Authorization</AccessToken>
     <AccessTokenPrefix>Bearer</AccessTokenPrefix>
 </OAuthV2>
