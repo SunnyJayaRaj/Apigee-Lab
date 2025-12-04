@@ -21,12 +21,16 @@
 
         <Flow name="GetAccountBalance">
             <Description>Retrieve sensitive data</Description>
-            <Request/>
+            <Request>
+                <Step>
+                    <Name>OAuth-Verify-Token</Name>
+                </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/balance") and (request.verb = "GET")</Condition>
         </Flow>
     </Flows>
-
+    
     <PostFlow name="PostFlow">
         <Request/>
         <Response/>
