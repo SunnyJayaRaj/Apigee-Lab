@@ -4,6 +4,7 @@
 
     <Policies>
         <Policy>OAuth-Generate-Token</Policy>
+        <Policy>OAuth-Verify-Token</Policy>
     </Policies>
 
     <ProxyEndpoints>
