@@ -1,4 +1,17 @@
 <APIProxy revision="1" name="retail-mesh-orchestrator">
     <DisplayName>Retail Mesh Orchestrator</DisplayName>
     <Description>Advanced Logic: Service Callouts and JS Mashups</Description>
+
+    <Policies>
+        <Policy>SC-Get-Inventory</Policy>
+        <Policy>JS-Mashup-Data</Policy>
+    </Policies>
+
+    <ProxyEndpoints>
+        <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
+    </ProxyEndpoints>
+
+    <TargetEndpoints>
+        <TargetEndpoint>target-endpoint-default</TargetEndpoint>
+    </TargetEndpoints>
 </APIProxy>
