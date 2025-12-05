@@ -49,44 +49,44 @@ When a client request hits the **Weather Shield**:
 
 <img width="2816" height="1536" alt="Project_1_Image" src="https://github.com/user-attachments/assets/0321a1d5-2432-48a1-98b6-b0c2c2af756d" />
 
-### 🧩 API Request Flow [Visual Diagram for better Explanation]
+### 🧩 Visual Diagram: API Request Flow
 
 The following diagram illustrates the request and response lifecycle for the `/weather-lab` endpoint managed by Google Cloud Apigee.
 ```mermaid
-flowchart TB
- subgraph PreFlow["Request Pipeline"]
-    direction TB
-    Spike{"⛔️ Spike Arrest"}
-    JWT{"🛡️ Verify JWT"}
-    Quota{"📉 Check Quota"}
-    CacheCheck{"⚡️ Cache Hit?"}
- end
- subgraph External["External Systems"]
-    Backend["☁️ Weather API"]
-    LogServer["📝 Audit Log Server"]
- end
- subgraph PostFlow["Response Pipeline"]
-    direction TB
-    CachePop["💾 Populate Cache"]
-    LogCall["📡 Service Callout"]
-    Transform["✨ XML to JSON"]
- end
+sequenceDiagram
+    autonumber
+    participant Client as 👤 Client
+    participant Apigee as 🛡️ Apigee Edge
+    participant Auth as 🔐 Security/Quota
+    participant Backend as ☁️ Weather API
+    participant LogServer as 📝 Audit Log
 
-    Client(["👤 Client"]) -- "GET /weather-lab" --> Apigee["Google Cloud Apigee"]
-    Apigee --> Spike
-    Spike -- Pass --> JWT
-    JWT -- Valid --> Quota
-    Quota -- Limit OK --> CacheCheck
-    CacheCheck -- No --> Backend
-    CacheCheck -- Yes --> LogCall
-    Backend -- Response --> CachePop
-    CachePop --> LogCall
-    LogCall --> Transform
-    Transform -- JSON Payload --> Client
-    LogCall -. Async .-> LogServer
+    Note over Client, Apigee: Inbound Request
+    Client->>Apigee: GET /weather-lab
+    Apigee->>Apigee: ⛔️ Spike Arrest Check
     
-    style Apigee fill:#f9f,stroke:#333
-    style Backend fill:#bbf,stroke:#333
+    Apigee->>Auth: 🛡️ Verify JWT & 📉 Check Quota
+    Auth-->>Apigee: Allowed
+    
+    Note over Apigee, Backend: Routing Logic
+    Apigee->>Apigee: ⚡️ Check Cache
+    
+    alt Cache Miss (Data not found)
+        Apigee->>Backend: Fetch Weather Data
+        Backend-->>Apigee: Return XML Response
+        Apigee->>Apigee: 💾 Populate Cache
+    else Cache Hit (Data found)
+        Apigee-->>Apigee: Retrieve from Memory
+    end
+
+    Note over Apigee, Client: Response Processing
+    par Async Logging
+        Apigee-)LogServer: 📡 Service Callout (Fire & Forget)
+    and Transformation
+        Apigee->>Apigee: ✨ Convert XML to JSON
+    end
+    
+    Apigee-->>Client: 200 OK (JSON Payload)
 ```
 ### 🌊 Flow Description of Visual Diagram
 
@@ -234,16 +234,76 @@ The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pa
     * **Get Token:** POST your ID/Secret to `https://[YOUR-URL]/bank-v1/token`.
     * **Access Data:** Use the returned token to GET `https://[YOUR-URL]/bank-v1/balance`.
 ---
+
 ## 📂 Project 3: Retail-Mesh-Orchestrator
-**Status:** 🚧 Active Development | **Path:** `./Retail-Mesh-Orchestrator`
+**Status:** ✅ Completed (v1.0) | **Path:** `./Retail-Mesh-Orchestrator`
 
 An advanced **API Composition** project.
 Instead of simply proxying traffic, this API acts as an **Orchestrator**, making parallel calls to multiple backends and merging the data using JavaScript logic before responding to the client.
 
-### 🎯 Key Learning Objectives
-* **Service Callouts:** Making side-requests to other APIs.
-* **JavaScript Policies:** Using code to parse and merge complex JSON.
-* **Fault Handling:** Managing partial failures (what if one backend fails?).
+### 🛠 Tech Stack
+![Apigee](https://img.shields.io/badge/Apigee-Orchestration-red?style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/Logic-JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![ServiceCallout](https://img.shields.io/badge/Policy-Service_Callout-blue?style=for-the-badge)
+
+### 📐 Architecture & Logic
+This proxy implements the **API Composition Pattern** (sometimes called "Backend for Frontend").
+
+| Module | Folder | Function |
+| :--- | :--- | :--- |
+| **Contract** | `01-API-Design` | **OpenAPI 3.0 Spec** for composite product data. |
+| **Mediation** | `02-Mediation` | **Service Callout:** Fetches inventory. **JavaScript:** Merges JSON. |
+| **Wiring** | `05-Proxy-Wiring` | **Flow Logic:** Orchestrates the sequence of calls. |
+
+### 🧩 Visual Diagram: API Composition Flow
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as 👤 Client
+    participant Apigee as 🧠 Orchestrator
+    participant ProductDB as 📦 Product API
+    participant InventoryDB as 🏭 Inventory API
+
+    Client->>Apigee: GET /product/555
+    
+    par Parallel Fetching
+        Apigee->>ProductDB: Fetch Product Details
+        Apigee->>InventoryDB: Fetch Stock Levels (Service Callout)
+    end
+    
+    ProductDB-->>Apigee: {"name": "Super Widget"}
+    InventoryDB-->>Apigee: {"status": "In Stock"}
+    
+    Note over Apigee: JavaScript Mashup Logic
+    
+    Apigee-->>Client: 200 OK {"product":..., "inventory":...}
+```
+### 🌊 Flow Description
+
+1.  **Request Ingest:** The client requests a composite resource (`/product/555`).
+2.  **Main Target:** The proxy forwards the request to the **Product Catalog** to get descriptions and pricing.
+3.  **Side Request (Service Callout):** *While* the main request is happening (or immediately after), the proxy makes a separate HTTP call to the **Inventory Service** to check stock levels.
+4.  **Data Holding:** Both responses are stored in flow variables (`response.content` and `inventoryResponse`).
+5.  **The Mashup (JavaScript):** A custom JS script executes to:
+    * Parse both JSON payloads.
+    * Extract relevant fields.
+    * Construct a new, unified JSON object.
+6.  **Final Response:** The composite object is returned to the client.
+
+### ☁️ Deployment Guide
+*Requires special folder structure for scripts.*
+
+1.  **Build:**
+    * Create a local `apiproxy` folder structure.
+    * **Crucial Step:** Place `Mashup-Logic.js` inside `apiproxy/resources/jsc/`.
+    * Place all other XML policies in `apiproxy/policies/`.
+    * Zip the folder.
+
+2.  **Deploy:** Upload to **Google Cloud Apigee** and deploy to `eval`.
+
+3.  **Verify:**
+    * `GET https://[YOUR-URL]/retail-v1/product/555`
+    * **Expected Result:** A merged JSON response containing both Product and Inventory data.
 
 ---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
