@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  title: Retail Mesh API
+  description: An orchestration proxy that aggregates data from multiple backends.
+  version: 1.0.0
+servers:
+  - url: https://api.retail-lab.com/v1
+paths:
+  /product/{productId}:
+    get:
+      summary: Get Product Composite Data
+      description: Returns merged data (Item + Inventory) in a single call.
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "555"
+      responses:
+        '200':
+          description: Successful Merge
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "555"
+                  name:
+                    type: string
+                    example: "Super Widget"
+                  stock_level:
+                    type: integer
+                    example: 120
+                  location:
+                    type: string
+                    example: "Warehouse-A"
