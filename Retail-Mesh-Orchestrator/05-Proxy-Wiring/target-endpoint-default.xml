@@ -3,6 +3,6 @@
     <PreFlow name="PreFlow"/>
     <PostFlow name="PostFlow"/>
     <HTTPTargetConnection>
-        <URL>https://mocktarget.apigee.net/xml</URL>
+        <URL>https://mocktarget.apigee.net/json</URL>
     </HTTPTargetConnection>
 </TargetEndpoint>
