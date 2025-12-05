@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="proxy-endpoint-default">
+    <Description>Retail Mesh Orchestrator Endpoint</Description>
+
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <Step>
+                <Name>SC-Get-Inventory</Name>
+            </Step>
+
+            <Step>
+                <Name>JS-Mashup-Data</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+
+    <HTTPProxyConnection>
+        <BasePath>/retail-v1</BasePath>
+        <Properties/>
+    </HTTPProxyConnection>
+
+    <RouteRule name="default">
+        <TargetEndpoint>target-endpoint-default</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>
