@@ -234,4 +234,16 @@ The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pa
     * **Get Token:** POST your ID/Secret to `https://[YOUR-URL]/bank-v1/token`.
     * **Access Data:** Use the returned token to GET `https://[YOUR-URL]/bank-v1/balance`.
 ---
+## 📂 Project 3: Retail-Mesh-Orchestrator
+**Status:** 🚧 Active Development | **Path:** `./Retail-Mesh-Orchestrator`
+
+An advanced **API Composition** project.
+Instead of simply proxying traffic, this API acts as an **Orchestrator**, making parallel calls to multiple backends and merging the data using JavaScript logic before responding to the client.
+
+### 🎯 Key Learning Objectives
+* **Service Callouts:** Making side-requests to other APIs.
+* **JavaScript Policies:** Using code to parse and merge complex JSON.
+* **Fault Handling:** Managing partial failures (what if one backend fails?).
+
+---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
