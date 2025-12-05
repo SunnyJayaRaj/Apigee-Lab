@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="false" continueOnError="false" enabled="true" name="SC-Get-Inventory">
+    <DisplayName>SC Get Inventory</DisplayName>
+    
+    <Request clearPayload="true" variable="inventoryRequest">
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+        <Set>
+            <Verb>GET</Verb>
+            </Set>
+    </Request>
+    
+    <Response>inventoryResponse</Response>
+    
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>https://mocktarget.apigee.net/json</URL>
+    </HTTPTargetConnection>
+</ServiceCallout>
