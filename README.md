@@ -306,4 +306,16 @@ sequenceDiagram
     * **Expected Result:** A merged JSON response containing both Product and Inventory data.
 
 ---
+## 📂 Project 4: Apigee-DevOps-Pipeline
+**Status:** 🚧 Active Development | **Path:** `./Apigee-DevOps-Pipeline`
+
+A demonstration of **CI/CD Automation**.
+This project moves away from manual console deployments. It uses **GitHub Actions** to automatically lint, bundle, and deploy the proxy whenever code is pushed to the repository.
+
+### 🎯 Key Learning Objectives
+* **CI (Continuous Integration):** Automated code quality checks using `apigeelint`.
+* **CD (Continuous Deployment):** Automated deployment to Google Cloud using `apigeecli`.
+* **GitHub Actions:** Writing workflow YAML files.
+
+---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
