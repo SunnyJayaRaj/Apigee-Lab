@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndpoint name="proxy-endpoint-default">
+    <PreFlow name="PreFlow"/>
+    <PostFlow name="PostFlow"/>
+    <HTTPProxyConnection>
+        <BasePath>/cicd-ping</BasePath>
+    </HTTPProxyConnection>
+    <RouteRule name="no-target"/>
+</ProxyEndpoint>
