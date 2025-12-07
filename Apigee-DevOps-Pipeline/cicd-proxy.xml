@@ -1,0 +1,6 @@
+<APIProxy revision="1" name="apigee-devops-pipeline">
+    <DisplayName>CI/CD Ping Proxy</DisplayName>
+    <ProxyEndpoints>
+        <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
+    </ProxyEndpoints>
+</APIProxy>
