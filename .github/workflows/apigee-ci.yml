@@ -1,0 +1,49 @@
+name: Apigee CI Pipeline
+
+# Trigger: Run this whenever we push code to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Job 1: Quality Check
+  quality-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # 1. Get the code from the repo
+    - uses: actions/checkout@v3
+    
+    # 2. Setup Node.js (Required for the linting tool)
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    # 3. The "Build" Step (Automating what you did manually!)
+    # We move files from our "Portfolio Structure" to "Apigee Structure"
+    - name: Build Proxy Bundle
+      run: |
+        echo "🚧 Building apiproxy folder..."
+        mkdir -p apiproxy/proxies
+        
+        # Copy the Manifest
+        cp Apigee-DevOps-Pipeline/cicd-proxy.xml apiproxy/
+        
+        # Copy the Proxies
+        cp Apigee-DevOps-Pipeline/05-Proxy-Wiring/proxy-endpoint-default.xml apiproxy/proxies/
+        
+        echo "✅ Build Complete. Structure created."
+
+    # 4. Install the Linter
+    - name: Install apigeelint
+      run: npm install -g apigeelint
+
+    # 5. Run the Linter
+    # This checks for best practices (naming conventions, unreachable code, etc.)
+    - name: Run Static Analysis
+      run: |
+        echo "🔍 Scanning code..."
+        apigeelint -s apiproxy/ -f table
