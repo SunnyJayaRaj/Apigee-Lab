@@ -1,6 +1,5 @@
-name: Apigee CI Pipeline
+name: Apigee CI Pipeline (Simulation Mode)
 
-# Trigger: Run this whenever we push code to the main branch
 on:
   push:
     branches: [ "main" ]
@@ -8,42 +7,57 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Job 1: Quality Check
-  quality-check:
+  # Job 1: The Build & Test Factory
+  ci-factory:
     runs-on: ubuntu-latest
-    
     steps:
-    # 1. Get the code from the repo
+    # 1. Get Code
     - uses: actions/checkout@v3
-    
-    # 2. Setup Node.js (Required for the linting tool)
+
+    # 2. Setup Tools
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '16'
 
-    # 3. The "Build" Step (Automating what you did manually!)
-    # We move files from our "Portfolio Structure" to "Apigee Structure"
+    # 3. BUILD: Create the Standard Apigee Structure
     - name: Build Proxy Bundle
       run: |
         echo "🚧 Building apiproxy folder..."
         mkdir -p apiproxy/proxies
-        
-        # Copy the Manifest
+        # Copy Manifest
         cp Apigee-DevOps-Pipeline/cicd-proxy.xml apiproxy/
-        
-        # Copy the Proxies
+        # Copy Proxy Endpoint
         cp Apigee-DevOps-Pipeline/05-Proxy-Wiring/proxy-endpoint-default.xml apiproxy/proxies/
-        
-        echo "✅ Build Complete. Structure created."
+        echo "✅ Bundle Structure Created."
 
-    # 4. Install the Linter
-    - name: Install apigeelint
-      run: npm install -g apigeelint
-
-    # 5. Run the Linter
-    # This checks for best practices (naming conventions, unreachable code, etc.)
-    - name: Run Static Analysis
+    # 4. TEST: Run the Linter (Quality Control)
+    - name: Install & Run apigeelint
       run: |
-        echo "🔍 Scanning code..."
+        npm install -g apigeelint
+        echo "🔍 Scanning code for errors..."
         apigeelint -s apiproxy/ -f table
+
+    # 5. PACKAGE: Zip it up (The Artifact)
+    - name: Create Zip Bundle
+      run: |
+        zip -r apiproxy.zip apiproxy
+        echo "📦 Zip file created successfully."
+
+    # 6. DELIVER: Upload the Zip so YOU can download it
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: deployable-bundle
+        path: apiproxy.zip
+
+  # Job 2: The Mock Deployment (What would happen next)
+  cd-simulation:
+    needs: ci-factory
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate Cloud Handshake
+        run: |
+          echo "🔐 Authenticating with Google Cloud... [MOCKED]"
+          echo "🚀 Uploading apiproxy.zip to Organization: resonant-amulet... [MOCKED]"
+          echo "✅ Deployment Revision 12 Activated. (Simulation)"
