@@ -234,7 +234,6 @@ The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pa
     * **Get Token:** POST your ID/Secret to `https://[YOUR-URL]/bank-v1/token`.
     * **Access Data:** Use the returned token to GET `https://[YOUR-URL]/bank-v1/balance`.
 ---
-
 ## 📂 Project 3: Retail-Mesh-Orchestrator
 **Status:** ✅ Completed (v1.0) | **Path:** `./Retail-Mesh-Orchestrator`
 
@@ -304,18 +303,75 @@ sequenceDiagram
 3.  **Verify:**
     * `GET https://[YOUR-URL]/retail-v1/product/555`
     * **Expected Result:** A merged JSON response containing both Product and Inventory data.
-
 ---
 ## 📂 Project 4: Apigee-DevOps-Pipeline
-**Status:** 🚧 Active Development | **Path:** `./Apigee-DevOps-Pipeline`
+**Status:** ✅ Completed (CI Phase) | **Path:** `./Apigee-DevOps-Pipeline`
 
-A demonstration of **CI/CD Automation**.
-This project moves away from manual console deployments. It uses **GitHub Actions** to automatically lint, bundle, and deploy the proxy whenever code is pushed to the repository.
+A demonstration of **Automated Continuous Integration (CI)**.
+This project moves away from manual console deployments. It uses **GitHub Actions** to automatically lint, bundle, and package the proxy whenever code is pushed to the repository.
 
-### 🎯 Key Learning Objectives
-* **CI (Continuous Integration):** Automated code quality checks using `apigeelint`.
-* **CD (Continuous Deployment):** Automated deployment to Google Cloud using `apigeecli`.
-* **GitHub Actions:** Writing workflow YAML files.
+### 🛠 Tech Stack
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![Node.js](https://img.shields.io/badge/Tool-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Apigeelint](https://img.shields.io/badge/Linter-apigeelint-orange?style=for-the-badge)
+![Bash](https://img.shields.io/badge/Scripting-Bash-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
 
+### 📐 Architecture & Logic
+The pipeline creates a "Quality Gate" that prevents bad code from reaching production.
+
+| Stage | Action | Function |
+| :--- | :--- | :--- |
+| **1. Build** | `mkdir` & `cp` | **Standardization:** Converts the raw repo structure into a valid `apiproxy` bundle. |
+| **2. Lint** | `apigeelint` | **Static Analysis:** Scans XML and JS files for syntax errors and best practice violations. |
+| **3. Package** | `zip` | **Artifact Creation:** Compresses the validated code into a deployable `apiproxy.zip` file. |
+| **4. Simulation** | `echo` | **CD Mock:** Simulates the cloud handshake (Deployment is currently manual due to env constraints). |
+
+### 🧩 Visual Diagram: CI/CD Pipeline
+```mermaid
+graph LR
+    Push[git push] --> GitHub[GitHub Actions]
+    GitHub --> Build[🏗 Build Structure]
+    Build --> Lint[🔍 Lint Check]
+    
+    Lint -- Fail --> Stop[⛔️ Stop Pipeline]
+    Lint -- Pass --> Zip[📦 Create Zip]
+    
+    Zip --> Upload[⬆️ Upload Artifact]
+    Upload --> Deploy[🚀 Mock Deployment]
+```
+### 🌊 Flow Description
+The pipeline automates the software delivery lifecycle in three distinct phases:
+
+**Phase 1: Trigger & Setup**
+* **Event:** A developer pushes code to the `main` branch.
+* **Initialization:** GitHub Actions provisions a fresh Ubuntu runner and installs the necessary runtime (Node.js) to execute the workflow.
+
+**Phase 2: The Quality Gate (CI)**
+* **Build:** The system dynamically assembles the `apiproxy` folder structure from the source files.
+* **Linting:** The `apigeelint` tool performs a deep scan of the XML configuration.
+    * ⛔️ **Failure:** If syntax errors or anti-patterns are found, the pipeline halts immediately, preventing broken code from progressing.
+    * ✅ **Success:** If the code is clean, the pipeline proceeds to packaging.
+
+**Phase 3: Delivery (Artifacts)**
+* **Packaging:** The validated bundle is compressed into a standard `apiproxy.zip` file.
+* **Artifact Upload:** This zip file is uploaded to GitHub Storage, allowing the developer to download the "Ready-to-Deploy" bundle.
+* **Simulation:** The workflow concludes by simulating the final handoff to Google Cloud (Deployment).
+
+### ☁️ Deployment Guide
+*This pipeline automates the Build and Verify stages.*
+
+1.  **Push Code:**
+    * Commit your changes and push to `main`.
+    * `git push origin main`
+
+2.  **Monitor Pipeline:**
+    * Go to the **Actions** tab in GitHub.
+    * Click on the latest workflow run.
+    * Verify all steps have **Green Checkmarks** ✅.
+
+3.  **Download Artifact:**
+    * Scroll to the "Artifacts" section of the workflow summary.
+    * Download **deployable-bundle**.
+    * This zip file is verified and ready for manual upload to Google Cloud Apigee if needed.
 ---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
