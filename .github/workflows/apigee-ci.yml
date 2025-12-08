@@ -46,7 +46,7 @@ jobs:
 
     # 6. DELIVER: Upload the Zip so YOU can download it
     - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: deployable-bundle
         path: apiproxy.zip
