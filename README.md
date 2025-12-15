@@ -374,4 +374,15 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
     * Download **deployable-bundle**.
     * This zip file is verified and ready for manual upload to Google Cloud Apigee if needed.
 ---
+## 📂 Project 5: Security-Governance-Shared-Flow
+**Status:** 🚧 Active Development | **Path:** `./Shared-Flows/Security-Governance-v1`
+
+A **Shared Flow** module designed to centralize security logic.
+Instead of duplicating policies across every proxy, this module is built once and referenced by multiple proxies using the `FlowCallout` policy, ensuring consistent governance across the organization.
+
+### 🎯 Key Learning Objectives
+* **Shared Flows:** Creating reusable logic bundles.
+* **FlowCallout Policy:** Invoking shared logic from a proxy.
+* **Governance:** Enforcing standard headers and traffic limits globally.
+---
 *Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
