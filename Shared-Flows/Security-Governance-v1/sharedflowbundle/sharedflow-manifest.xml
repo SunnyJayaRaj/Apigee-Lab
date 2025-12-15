@@ -5,5 +5,8 @@
     <SharedFlows>
         <SharedFlow>default</SharedFlow>
     </SharedFlows>
-    <Policies/>
+    <Policies>
+        <Policy>SA-Standard-Limit</Policy>
+        <Policy>AM-Set-Security-Headers</Policy>
+    </Policies>
 </SharedFlowBundle>
