@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SharedFlowBundle revision="1" name="security-governance-v1">
+    <DisplayName>Security Governance v1</DisplayName>
+    <Description>Standard reusable security logic for all enterprise proxies.</Description>
+    <SharedFlows>
+        <SharedFlow>default</SharedFlow>
+    </SharedFlows>
+    <Policies/>
+</SharedFlowBundle>
