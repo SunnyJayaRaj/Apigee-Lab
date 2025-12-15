@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <SharedFlow name="default">
     <Step>
-        </Step>
+        <Name>SA-Standard-Limit</Name>
+    </Step>
+
+    <Step>
+        <Name>AM-Set-Security-Headers</Name>
+    </Step>
 </SharedFlow>
