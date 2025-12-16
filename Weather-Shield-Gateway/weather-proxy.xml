@@ -6,9 +6,10 @@
     <Description>My first proxy integrating Security, Mediation, and Traffic Management</Description>
 
     <Policies>
-        <Policy>Spike-Arrest-Protection</Policy>
-        <Policy>AM-Set-Secret-Key</Policy>
+   <!-- <Policy>Spike-Arrest-Protection</Policy> -->
    <!-- <Policy>Verify-API-Key</Policy> -->
+        <Policy>FC-Security-Shared-Flow</Policy>
+        <Policy>AM-Set-Secret-Key</Policy>
         <Policy>Verify-JWT-Protection</Policy>
         <Policy>Response-Cache-Standard</Policy>
         <Policy>Quota-Silver-Tier</Policy>
