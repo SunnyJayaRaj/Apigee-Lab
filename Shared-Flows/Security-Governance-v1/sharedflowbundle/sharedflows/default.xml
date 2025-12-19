@@ -3,8 +3,4 @@
     <Step>
         <Name>SA-Standard-Limit</Name>
     </Step>
-
-    <Step>
-        <Name>AM-Set-Security-Headers</Name>
-    </Step>
 </SharedFlow>
