@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-Set-Personalized-Response">
+  <DisplayName>Set Personalized Response</DisplayName>
+  <Set>
+    <Payload contentType="application/json">
+            {
+                "message": "Hello, {jwt.Verify-JWT-Protection.claim.subject}!",
+                "city": "{request.queryparam.city}",
+                "status": "Authorized"
+            }
+        </Payload>
+  </Set>
+  <AssignTo createNew="false" transport="http" type="response"/>
+</AssignMessage>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<APIProxy revision="22" name="Weather-Shield-Gateway">
+  <DisplayName>Sunny Weather Proxy</DisplayName>
+  <Description>My first proxy integrating Security, Mediation, and Traffic Management</Description>
+  <CreatedAt>1766125384879</CreatedAt>
+  <LastModifiedAt>1766125481977</LastModifiedAt>
+  <BasePaths>/weather-lab</BasePaths>
+  <Policies>
+    <Policy>AM-Set-Secret-Key</Policy>
+    <Policy>XML-to-JSON-Conversion</Policy>
+    <Policy>Fault-Quota-Failure</Policy>
+    <Policy>Service-Callout-Logging</Policy>
+    <Policy>Quota-Silver-Tier</Policy>
+    <Policy>Response-Cache-Standard</Policy>
+    <Policy>Verify-JWT-Protection</Policy>
+    <Policy>AM-Set-Personalized-Response</Policy>
+    <Policy>FC-Invoke-Governance</Policy>
+    <Policy>AM-Set-Security-Headers</Policy>
+  </Policies>
+  <ProxyEndpoints>
+    <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
+  </ProxyEndpoints>
+  <TargetEndpoints>
+    <TargetEndpoint>target-endpoint-default</TargetEndpoint>
+  </TargetEndpoints>
+</APIProxy>
