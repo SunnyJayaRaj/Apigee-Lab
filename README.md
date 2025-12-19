@@ -375,14 +375,105 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
     * This zip file is verified and ready for manual upload to Google Cloud Apigee if needed.
 ---
 ## 📂 Project 5: Security-Governance-Shared-Flow
-**Status:** 🚧 Active Development | **Path:** `./Shared-Flows/Security-Governance-v1`
+**Status:** ✅ Completed (v1.0) | **Path:** `./Project-5-Governance`
 
 A **Shared Flow** module designed to centralize security logic.
 Instead of duplicating policies across every proxy, this module is built once and referenced by multiple proxies using the `FlowCallout` policy, ensuring consistent governance across the organization.
 
-### 🎯 Key Learning Objectives
-* **Shared Flows:** Creating reusable logic bundles.
-* **FlowCallout Policy:** Invoking shared logic from a proxy.
-* **Governance:** Enforcing standard headers and traffic limits globally.
+### 🛠 Tech Stack
+![Apigee](https://img.shields.io/badge/Apigee-Shared_Flow-red?style=for-the-badge)
+![XML](https://img.shields.io/badge/XML-Policy-orange?style=for-the-badge)
+![FlowCallout](https://img.shields.io/badge/Policy-FlowCallout-blue?style=for-the-badge)
+
+### 📐 Architecture & Logic
+This project separates global governance from local proxy logic.
+
+| Module | Folder | Function |
+| :--- | :--- | :--- |
+| **Shared Bundle** | `Security-Governance-v1` | **Global Logic:** Contains the Spike Arrest policy (`SA-Standard-Limit`). |
+| **Proxy Bundle** | `Weather-Shield-Gateway` | **Local Implementation:** Calls the shared logic via `FlowCallout` in the PreFlow. |
+| **Response Logic** | `PostFlow` | **Hardening:** Security Headers and Response personalization happen here. |
+
+### 🔄 Execution Flow
+1.  **Request:** Client calls the Proxy.
+2.  **FlowCallout:** The Proxy pauses and executes the **Shared Flow**.
+3.  **Governance:** The Shared Flow applies the **Spike Arrest**.
+4.  **Resume:** If successful, control returns to the Proxy to handle Authentication and Caching.
+
+### 🧩 Visual Diagram: Shared Flow Execution
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Client as 👤 Client
+    participant Proxy as 🛡️ Weather Shield Proxy
+    participant Shared as 📦 Shared Flow (Governance)
+    participant Backend as ☁️ Target
+
+    Note over Client, Proxy: Inbound Request
+    Client->>Proxy: GET /weather-lab
+    
+    Note over Proxy, Shared: FlowCallout (Context Switch)
+    Proxy->>Shared: ⚡️ Invoke Governance
+    
+    rect rgb(255, 240, 240)
+        Note right of Shared: Security-Governance-v1
+        Shared->>Shared: ⛔️ Spike Arrest Check (100pm)
+    end
+    
+    Shared-->>Proxy: Resume Flow
+    
+    Note over Proxy, Backend: Local Proxy Logic
+    Proxy->>Proxy: 🔐 Verify JWT / Check Quota
+    Proxy->>Backend: Request Data
+    Backend-->>Proxy: Response
+
+    Note over Proxy, Client: Response Hardening
+    Proxy->>Proxy: 🔒 Add Security Headers
+    Proxy-->>Client: 200 OK (Safe & Secured)
+```
+### 🌊 Flow Description
+
+The architecture implements a **Governance-First** approach, ensuring that global security standards are applied before any local proxy logic runs.
+
+1.  **Governance Hook (PreFlow):**
+    * **Delegation:** Upon receiving a request, the `Weather-Shield-Gateway` immediately suspends its own logic and invokes the `FC-Invoke-Governance` policy.
+    * **Context Switch:** Control is passed to the **Shared Flow Bundle** (`Security-Governance-v1`).
+    * **Global Enforcement:** The Shared Flow executes the **Spike Arrest** policy (100 requests/minute). This protects the entire platform from DDoS attacks, regardless of the individual proxy's configuration.
+
+2.  **Local Execution:**
+    * If the request passes the Spike Arrest, control returns to the main proxy.
+    * The proxy then proceeds with its specific security chain: **Verify JWT** (Identity) and **Check Quota** (Monetization).
+
+3.  **Response Hardening (PostFlow):**
+    * **Personalization:** Before responding, the proxy overwrites the generic backend message ("Hello, Guest") with the user's name extracted from the JWT.
+    * **Security Headers:** The `AM-Set-Security-Headers` policy injects critical HTTP headers (`Strict-Transport-Security`, `X-Frame-Options`) to protect the client against clickjacking and sniffing attacks.
+
 ---
-*Created & Maintained by [Sunny JayaRaj](https://github.com/SunnyJayaRaj)*
+
+### ☁️ Deployment Guide
+
+*This project requires deploying two separate artifacts: the Shared Flow first, then the Proxy.*
+
+1.  **Deploy the Shared Flow:**
+    * Create a folder `sharedflowbundle`.
+    * Inside `sharedflowbundle/policies/`, add `SA-Standard-Limit.xml`.
+    * Inside `sharedflowbundle/sharedflows/`, add `default.xml` (referencing the policy).
+    * **Zip** the `sharedflowbundle` folder.
+    * Go to **Apigee > Develop > Shared Flows**.
+    * Upload and **Deploy** to `eval`.
+
+2.  **Configure the Proxy:**
+    * Open your `Weather-Shield-Gateway` proxy bundle.
+    * **Add Policy:** Create a `FlowCallout` policy named `FC-Invoke-Governance` that references `security-governance-v1`.
+    * **Add Policy:** Create `AM-Set-Security-Headers` and `AM-Set-Personalized-Response`.
+    * **Wiring:**
+        * Attach `FC-Invoke-Governance` to the **Request PreFlow** (Step 1).
+        * Attach `AM-Set-Security-Headers` and `AM-Set-Personalized-Response` to the **Response PostFlow**.
+    * **Deploy** the updated proxy to `eval`.
+
+3.  **Verify:**
+    * **Test 1 (Governance):** Click "Send" in Postman rapidly (3+ times/sec). You should receive a **429 Too Many Requests** error.
+    * **Test 2 (Headers):** Send a valid request. Check the **Headers** tab in Postman for `Strict-Transport-Security` and `X-Frame-Options`.
+    * **Test 3 (Identity):** Ensure the JSON body responds with `"message": "Hello, [your-subject]!"` instead of "Guest".
+---
+*Created & Maintained by [Sunny JayaRaju](https://github.com/SunnyJayaRaju)*
