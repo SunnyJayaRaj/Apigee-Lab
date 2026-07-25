@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <APIProxy revision="22" name="Weather-Shield-Gateway">
   <DisplayName>Sunny Weather Proxy</DisplayName>
-  <Description>My first proxy integrating Security, Mediation, and Traffic Management</Description>
+  <Description>
+    Demonstrates reusable security governance using Apigee Shared Flows.
+    This proxy consumes the Security-Governance-v1 shared flow instead of
+    implementing common security policies directly.
+  </Description>
   <CreatedAt>1766125384879</CreatedAt>
   <LastModifiedAt>1766125481977</LastModifiedAt>
   <BasePaths>/weather-lab</BasePaths>

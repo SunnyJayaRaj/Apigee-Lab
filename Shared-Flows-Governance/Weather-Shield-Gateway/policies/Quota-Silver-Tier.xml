@@ -5,5 +5,5 @@
   <Allow count="5000"/>
   <Interval>1</Interval>
   <TimeUnit>month</TimeUnit>
-  <Identifier ref="client_id"/>
+  <Identifier ref="verifyapikey.Verify-API-Key.apikey"/>
 </Quota>
