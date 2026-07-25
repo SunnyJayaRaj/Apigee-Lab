@@ -9,7 +9,7 @@ This repository acts as a monorepo for my journey to mastering **Google Cloud Ap
 ---
 
 ## 📂 Project 1: Weather-Shield-Gateway
-**Status:** ✅ Completed (v1.0) | **Path:** `./Weather-Shield-Gateway`
+**Status:** ✅ Actively Maintained | **Path:** `./Weather-Shield-Gateway`
 
 A fully functional, enterprise-grade API Proxy that demonstrates the core pillars of API Management: Security, Mediation, and Monetization.
 
@@ -141,7 +141,7 @@ sequenceDiagram
         ```
 ---
 ## 📂 Project 2: Secure-Bank-Access
-**Status:** ✅ Completed (v1.0) | **Path:** `./Secure-Bank-Access`
+**Status:** ✅ Actively Maintained | **Path:** `./Secure-Bank-Access`
 
 A simulation of a Banking API focused on **Identity & Access Management (IAM)**.
 This project implements the **OAuth 2.0 Client Credentials** flow to secure sensitive financial data.
@@ -236,7 +236,7 @@ The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pa
     * **Access Data:** Use the returned token to GET `https://[YOUR-URL]/bank-v1/balance`.
 ---
 ## 📂 Project 3: Retail-Mesh-Orchestrator
-**Status:** ✅ Completed (v1.0) | **Path:** `./Retail-Mesh-Orchestrator`
+**Status:** ✅  Actively Maintained | **Path:** `./Retail-Mesh-Orchestrator`
 
 An advanced **API Composition** project.
 Instead of simply proxying traffic, this API acts as an **Orchestrator**, making parallel calls to multiple backends and merging the data using JavaScript logic before responding to the client.
@@ -306,7 +306,7 @@ sequenceDiagram
     * **Expected Result:** A merged JSON response containing both Product and Inventory data.
 ---
 ## 📂 Project 4: Apigee-DevOps-Pipeline
-**Status:** ✅ Completed (CI Phase) | **Path:** `./Apigee-DevOps-Pipeline`
+**Status:** ✅ Actively Maintained (CI Phase) | **Path:** `./Apigee-DevOps-Pipeline`
 
 A demonstration of **Automated Continuous Integration (CI)**.
 This project moves away from manual console deployments. It uses **GitHub Actions** to automatically lint, bundle, and package the proxy whenever code is pushed to the repository.
@@ -376,7 +376,7 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
     * This zip file is verified and ready for manual upload to Google Cloud Apigee if needed.
 ---
 ## 📂 Project 5: Security-Governance-Shared-Flow
-**Status:** ✅ Completed (v1.0) | **Path:** `./Shared-Flows-Governance/Security-Governance-v1`
+**Status:** ✅ Actively Maintained | **Path:** `./Shared-Flows-Governance/Security-Governance-v1`
 
 A **Shared Flow** module designed to centralize security logic.
 Instead of duplicating policies across every proxy, this module is built once and referenced by multiple proxies using the `FlowCallout` policy, ensuring consistent governance across the organization.
