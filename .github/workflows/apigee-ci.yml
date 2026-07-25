@@ -2,59 +2,61 @@ name: Apigee CI Pipeline (Simulation Mode)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+permissions:
+  contents: read
 
 jobs:
-  # Job 1: The Build & Test Factory
   ci-factory:
+    name: Build, Lint & Package
     runs-on: ubuntu-latest
+
     steps:
-    # 1. Get Code
-    - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 2. Setup Tools
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
 
-    # 3. BUILD: Create the Standard Apigee Structure
-    - name: Build Proxy Bundle
-      run: |
-        echo "🚧 Building apiproxy folder..."
-        mkdir -p apiproxy/proxies
-        # Copy Manifest
-        cp Apigee-DevOps-Pipeline/cicd-proxy.xml apiproxy/
-        # Copy Proxy Endpoint
-        cp Apigee-DevOps-Pipeline/05-Proxy-Wiring/proxy-endpoint-default.xml apiproxy/proxies/
-        echo "✅ Bundle Structure Created."
+      - name: Build Proxy Bundle
+        run: |
+          echo "🚧 Building apiproxy folder..."
+          mkdir -p apiproxy/proxies
 
-    # 4. TEST: Run the Linter (Quality Control)
-    - name: Install & Run apigeelint
-      run: |
-        npm install -g apigeelint
-        echo "🔍 Scanning code for errors..."
-        apigeelint -s apiproxy/ -f table
+          cp Apigee-DevOps-Pipeline/cicd-proxy.xml apiproxy/
+          cp Apigee-DevOps-Pipeline/05-Proxy-Wiring/proxy-endpoint-default.xml apiproxy/proxies/
 
-    # 5. PACKAGE: Zip it up (The Artifact)
-    - name: Create Zip Bundle
-      run: |
-        zip -r apiproxy.zip apiproxy
-        echo "📦 Zip file created successfully."
+          echo "✅ Bundle Structure Created."
 
-    # 6. DELIVER: Upload the Zip so YOU can download it
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: deployable-bundle
-        path: apiproxy.zip
+      - name: Install & Run apigeelint
+        run: |
+          npm install --global apigeelint
 
-  # Job 2: The Mock Deployment (What would happen next)
+          echo "🔍 Scanning code for errors..."
+          apigeelint -s apiproxy/ -f table
+
+      - name: Create Zip Bundle
+        run: |
+          zip -r apiproxy.zip apiproxy
+          echo "📦 Zip bundle created successfully."
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployable-bundle
+          path: apiproxy.zip
+
   cd-simulation:
+    name: Mock Deployment
     needs: ci-factory
     runs-on: ubuntu-latest
+
     steps:
       - name: Simulate Cloud Handshake
         run: |
