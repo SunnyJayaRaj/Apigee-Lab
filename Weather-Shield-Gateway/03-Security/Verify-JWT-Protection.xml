@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <VerifyJWT async="false" continueOnError="false" enabled="true" name="Verify-JWT-Protection">
     <DisplayName>Verify JWT Protection</DisplayName>
+
     <Algorithm>HS256</Algorithm>
+
     <Source>request.header.Authorization</Source>
+
     <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+
     <SecretKey>
         <Value ref="private.jwt_secret_key"/>
     </SecretKey>
-    <Subject>weather-app-user</Subject>
+
     <Issuer>urn://apigee-lab-auth</Issuer>
+
+    <Subject>weather-app-user</Subject>
+
+    <Audience>weather-shield-gateway</Audience>
+
 </VerifyJWT>
