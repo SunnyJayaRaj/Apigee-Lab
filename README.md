@@ -118,7 +118,7 @@ sequenceDiagram
     * **Zip** the `apiproxy` folder (Result: `apiproxy.zip`).
 
 2.  **Upload to Cloud:**
-    * Go to **Google Cloud console → Apigee → API Proxies**.
+    * Go to **Google Cloud Console → Apigee → API Proxies**.
     * Click **Create New** → **Upload Proxy Bundle**.
     * Select `apiproxy.zip`.
 
@@ -128,7 +128,7 @@ sequenceDiagram
 
 4.  **Verify:**
     * **Step 1:** Generate a test JWT at [jwt.io](https://jwt.io) using a temporary signing secret of your choice (for example, `demo-signing-secret`).
-       > **Security Note:** This example uses a temporary secret for demonstration purposes only. In production Apigee deployments, signing secrets should never be hardcoded. Store them securely using services such as **Apigee KVM**, **Google Cloud Secret Manager**, or another approved secret management solution.
+       * Security Note: This example uses a temporary secret for demonstration purposes only. In production Apigee deployments, signing secrets should never be hardcoded. Store them securely using services such as **Apigee KVM**, **Google Cloud Secret Manager**, or another approved secret management solution.
     * **Step 2 (Option A - Postman):**
         * Create a **GET** request to `https://[YOUR-URL]/weather-lab?city=London`.
         * Go to **Headers** tab.
