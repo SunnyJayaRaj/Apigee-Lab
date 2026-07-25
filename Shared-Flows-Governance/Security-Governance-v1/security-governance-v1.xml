@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <SharedFlowBundle revision="2" name="security-governance-v1">
-  <DisplayName>Security Governance v1</DisplayName>
-  <Description>Standard reusable security logic for all enterprise proxies.</Description>
-  <CreatedAt>1766124725936</CreatedAt>
-  <LastModifiedAt>1766124725936</LastModifiedAt>
-  <Policies>
-    <Policy>AM-Set-Security-Headers</Policy>
-    <Policy>SA-Standard-Limit</Policy>
-  </Policies>
-  <SharedFlows>
-    <SharedFlow>default</SharedFlow>
-  </SharedFlows>
-  <subType>SharedFlow</subType>
+    <DisplayName>Security Governance v1</DisplayName>
+
+    <Description>
+        Standard reusable security policies shared across API proxies.
+    </Description>
+
+    <Policies>
+        <Policy>SA-Standard-Limit</Policy>
+    </Policies>
+
+    <SharedFlows>
+        <SharedFlow>default</SharedFlow>
+    </SharedFlows>
+
+    <subType>SharedFlow</subType>
 </SharedFlowBundle>
