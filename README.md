@@ -118,8 +118,8 @@ sequenceDiagram
     * **Zip** the `apiproxy` folder (Result: `apiproxy.zip`).
 
 2.  **Upload to Cloud:**
-    * Go to **Google Cloud Console > Apigee > API Proxies**.
-    * Click **Create New** -> **Upload Proxy Bundle**.
+    * Go to **Google Cloud console → Apigee → API Proxies**.
+    * Click **Create New** → **Upload Proxy Bundle**.
     * Select `apiproxy.zip`.
 
 3.  **Deploy:**
@@ -345,7 +345,7 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
 
 **Phase 1: Trigger & Setup**
 * **Event:** A developer pushes code to the `main` branch.
-* **Initialization:** GitHub Actions provisions a fresh Ubuntu runner and installs the necessary runtime (Node.js) to execute the workflow.
+* **Initialization:** GitHub Actions provisions a fresh GitHub-hosted runner and installs the necessary runtime (Node.js) to execute the workflow.
 
 **Phase 2: The Quality Gate (CI)**
 * **Build:** The system dynamically assembles the `apiproxy` folder structure from the source files.
@@ -376,7 +376,7 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
     * This zip file is verified and ready for manual upload to Google Cloud Apigee if needed.
 ---
 ## 📂 Project 5: Security-Governance-Shared-Flow
-**Status:** ✅ Completed (v1.0) | **Path:** `./Project-5-Governance`
+**Status:** ✅ Completed (v1.0) | **Path:** `./Shared-Flows-Governance/Security-Governance-v1`
 
 A **Shared Flow** module designed to centralize security logic.
 Instead of duplicating policies across every proxy, this module is built once and referenced by multiple proxies using the `FlowCallout` policy, ensuring consistent governance across the organization.
