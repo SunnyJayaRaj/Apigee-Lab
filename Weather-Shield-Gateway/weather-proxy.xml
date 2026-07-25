@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <APIProxy revision="1" name="weather-proxy">
     <Basepaths>/weather-lab</Basepaths>
+
     <ConfigurationVersion majorVersion="4.0" minorVersion="0"/>
+
     <DisplayName>Sunny Weather Proxy</DisplayName>
-    <Description>My first proxy integrating Security, Mediation, and Traffic Management</Description>
+
+    <Description>
+        Demonstrates security, mediation, caching, quota management, traffic management,
+        and shared flow governance using Google Cloud Apigee.
+    </Description>
 
     <Policies>
-   <!-- <Policy>Spike-Arrest-Protection</Policy> -->
-   <!-- <Policy>Verify-API-Key</Policy> -->
         <Policy>FC-Security-Shared-Flow</Policy>
         <Policy>AM-Set-Secret-Key</Policy>
         <Policy>Verify-JWT-Protection</Policy>
