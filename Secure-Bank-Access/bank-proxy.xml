@@ -1,6 +1,9 @@
 <APIProxy revision="1" name="secure-bank-access">
     <DisplayName>Secure Bank Access</DisplayName>
-    <Description>OAuth 2.0 Implementation Lab</Description>
+    <Description>
+    Demonstrates OAuth 2.0 Client Credentials authentication using Apigee,
+    including access token generation and verification for protected APIs.
+    </Description>
 
     <Policies>
         <Policy>OAuth-Generate-Token</Policy>
