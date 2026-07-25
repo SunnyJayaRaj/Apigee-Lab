@@ -1,5 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <APIProxy revision="1" name="apigee-devops-pipeline">
     <DisplayName>CI/CD Ping Proxy</DisplayName>
+
+    <Description>
+        Demonstrates a minimal Apigee proxy suitable for CI/CD pipeline
+        validation and automated deployment demonstrations.
+    </Description>
+
     <ProxyEndpoints>
         <ProxyEndpoint>proxy-endpoint-default</ProxyEndpoint>
     </ProxyEndpoints>

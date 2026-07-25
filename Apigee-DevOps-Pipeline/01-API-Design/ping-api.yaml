@@ -1,14 +1,41 @@
-openapi: 3.0.0
+openapi: 3.0.3
+
 info:
   title: CI/CD Ping API
+  description: |
+    A lightweight API used to demonstrate CI/CD validation,
+    automated deployment, and proxy verification using
+    Google Cloud Apigee.
+
+    This specification is intended for learning and portfolio purposes.
   version: 1.0.0
+  contact:
+    name: Sunny JayaRaju
+    url: https://github.com/SunnyJayaRaju
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.example.com
+    description: Mock Endpoint
+
+tags:
+  - name: Health
+    description: Health check operations
+
 paths:
   /ping:
     get:
+      tags:
+        - Health
       summary: Health Check
+      description: Returns the operational status of the API.
+      operationId: ping
+
       responses:
-        '200':
-          description: OK
+        "200":
+          description: API is available.
           content:
             application/json:
               schema:
@@ -16,4 +43,4 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: "pong"
+                    example: pong
