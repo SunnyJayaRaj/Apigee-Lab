@@ -1,6 +1,9 @@
 <APIProxy revision="1" name="retail-mesh-orchestrator">
     <DisplayName>Retail Mesh Orchestrator</DisplayName>
-    <Description>Advanced Logic: Service Callouts and JS Mashups</Description>
+    <Description>
+    Demonstrates API orchestration using Service Callouts and JavaScript
+    to combine data from multiple backend services into a single response.
+    </Description>
 
     <Policies>
         <Policy>SC-Get-Inventory</Policy>

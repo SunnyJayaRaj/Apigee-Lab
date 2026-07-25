@@ -1,10 +1,24 @@
-openapi: 3.0.0
+openapi: 3.0.3
+
 info:
-  title: Retail Mesh API
-  description: An orchestration proxy that aggregates data from multiple backends.
+  title: Retail Mesh Orchestrator API
+  description: |
+    A sample API demonstrating service orchestration using Google Cloud
+    Apigee. The proxy aggregates responses from multiple backend services
+    into a single client response.
+
+    This specification is intended for learning and portfolio purposes.
   version: 1.0.0
+  contact:
+    name: Sunny JayaRaju
+    url: https://github.com/SunnyJayaRaju
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
 servers:
   - url: https://api.retail-lab.com/v1
+    description: Mock Backend
 paths:
   /product/{productId}:
     get:
