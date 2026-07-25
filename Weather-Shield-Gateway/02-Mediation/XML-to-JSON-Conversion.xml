@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <XMLToJSON async="false" continueOnError="false" enabled="true" name="XML-to-JSON-Conversion">
-    <DisplayName>XML to JSON Conversion</DisplayName>
+    <DisplayName>Transform XML Response to JSON</DisplayName>
     <Properties/>
     <Options>
         <RecognizeNumber>true</RecognizeNumber>
