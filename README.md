@@ -10,9 +10,9 @@
 
 Welcome to my **Digital Laboratory**.
 
-This repository is a collection of hands-on, enterprise-inspired projects built with **Google Cloud Apigee**. Each project focuses on a specific area of API Management—including API Security, OAuth 2.0, Traffic Management, API Composition, Shared Governance, and CI/CD—to demonstrate practical implementation patterns rather than isolated policy examples.
+This repository is a collection of hands-on, enterprise-inspired projects built with **Google Cloud Apigee**. Each project focuses on a specific area of API management: security, OAuth 2.0, traffic control, API composition, shared governance, and CI/CD. The goal is practical, reusable patterns rather than isolated policy examples.
 
-Whether you're learning Apigee, exploring enterprise API Management, or reviewing my work, each project is fully documented with architecture diagrams, deployment guidance, and implementation details to provide a complete learning experience.
+Whether you're learning Apigee, exploring enterprise API management, or reviewing my work, each project is fully documented with architecture diagrams, deployment guidance, and implementation notes.
 
 ## 🚀 Try the Lab (zero setup · free)
 
@@ -22,7 +22,7 @@ Whether you're learning Apigee, exploring enterprise API Management, or reviewin
   </a>
 </p>
 
-> One click opens the entire lab in your browser — it auto-validates **all 5 projects** and prints a health report. No setup, no cost.
+> One click opens the entire lab in your browser. It validates **all 5 projects** and prints a health report. No setup, no cost.
 
 ### ⚡ Quick Launch
 
