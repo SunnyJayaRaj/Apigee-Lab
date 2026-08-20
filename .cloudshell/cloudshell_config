@@ -1,5 +1,4 @@
 [general]
-# Google Cloud Shell opens in the Weather-Shield-Gateway project directory
-cloudshell_workspace = Weather-Shield-Gateway
-# Startup script runs apigeelint to validate the bundle on open
+# Opens the repo at its root so the full-lab audit script can run
+# Run "cd <project>/" after opening to explore a specific project
 startup_script = tools/validate.sh

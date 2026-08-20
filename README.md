@@ -10,6 +10,12 @@ This repository is a collection of hands-on, enterprise-inspired projects built 
 
 Whether you're learning Apigee, exploring enterprise API Management, or reviewing my work, each project is fully documented with architecture diagrams, deployment guidance, and implementation details to provide a complete learning experience.
 
+### 🚀 Try the full lab in Google Cloud Shell
+
+> One click opens the entire lab in your browser — it auto-validates **all 5 projects** and prints a health report. No setup, no cost.
+
+[![Try the Lab in Cloud Shell](https://img.shields.io/badge/Try%20the%20Lab-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git)
+
 ## 📑 Table of Contents
 
 - [Project 1: Weather-Shield-Gateway](#-project-1-weather-shield-gateway)
@@ -173,6 +179,8 @@ sequenceDiagram
 **Status:** ✅ Actively Maintained | **Path:** `./Secure-Bank-Access`
 
 A simulation of a Banking API focused on **Identity & Access Management (IAM)**.
+
+[![Open in Cloud Shell](https://img.shields.io/badge/Open%20in-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Secure-Bank-Access)
 This project implements the **OAuth 2.0 Client Credentials** flow to secure sensitive financial data.
 
 ### 🛠 Tech Stack
@@ -277,6 +285,8 @@ The architecture implements a standard **OAuth 2.0 Client Credentials Grant** pa
 **Status:** ✅  Actively Maintained | **Path:** `./Retail-Mesh-Orchestrator`
 
 An advanced **API Composition** project.
+
+[![Open in Cloud Shell](https://img.shields.io/badge/Open%20in-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Retail-Mesh-Orchestrator)
 Instead of simply proxying traffic, this API acts as an **Orchestrator**, making parallel calls to multiple backends and merging the data using JavaScript logic before responding to the client.
 
 ### 🛠 Tech Stack
@@ -356,6 +366,8 @@ sequenceDiagram
 **Status:** ✅ Actively Maintained (CI Phase) | **Path:** `./Apigee-DevOps-Pipeline`
 
 A demonstration of **Automated Continuous Integration (CI)**.
+
+[![Open in Cloud Shell](https://img.shields.io/badge/Open%20in-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Apigee-DevOps-Pipeline)
 This project moves away from manual console deployments. It uses **GitHub Actions** to automatically lint, bundle, and package the proxy whenever code is pushed to the repository.
 
 ### 🛠 Tech Stack
@@ -435,6 +447,8 @@ The pipeline automates the software delivery lifecycle in three distinct phases:
 **Status:** ✅ Actively Maintained | **Path:** `./Shared-Flows-Governance/Security-Governance-v1`
 
 A **Shared Flow** module designed to centralize security logic.
+
+[![Open in Cloud Shell](https://img.shields.io/badge/Open%20in-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Shared-Flows-Governance)
 Instead of duplicating policies across every proxy, this module is built once and referenced by multiple proxies using the `FlowCallout` policy, ensuring consistent governance across the organization.
 
 ### 🛠 Tech Stack
