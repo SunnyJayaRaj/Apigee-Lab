@@ -2,6 +2,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-success?style=for-the-badge)
 ![Maintained](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)
+[![CI](https://img.shields.io/github/actions/workflow/status/SunnyJayaRaju/Apigee-Lab/apigee-ci.yml?branch=main&label=CI&style=for-the-badge)](https://github.com/SunnyJayaRaju/Apigee-Lab/actions)
 
 Welcome to my **Digital Laboratory**.
 
