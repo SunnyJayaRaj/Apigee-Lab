@@ -29,7 +29,7 @@ A fully functional, enterprise-grade API Proxy that demonstrates the core pillar
 
 > Click below to open this project in Cloud Shell — it will automatically validate the proxy bundle and show you the project structure in seconds. No setup required.
 
-[![Open in Cloud Shell](https://storage.googleapis.com/cloudshell/images/cloudshell_27.png)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Weather-Shield-Gateway)
+[![Open in Cloud Shell](https://img.shields.io/badge/Open%20in-Google%20Cloud%20Shell-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Weather-Shield-Gateway)
 
 ### 🛠 Tech Stack
 ![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
