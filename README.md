@@ -25,6 +25,12 @@ Whether you're learning Apigee, exploring enterprise API Management, or reviewin
 
 A fully functional, enterprise-grade API Proxy that demonstrates the core pillars of API Management: Security, Mediation, and Monetization.
 
+### 🚀 Try it in Google Cloud Shell
+
+> Click below to open this project in Cloud Shell — it will automatically validate the proxy bundle and show you the project structure in seconds. No setup required.
+
+[![Open in Cloud Shell](https://storage.googleapis.com/cloudshell/images/cloudshell_27.png)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/SunnyJayaRaju/Apigee-Lab.git&cloudshell_workspace=Weather-Shield-Gateway)
+
 ### 🛠 Tech Stack
 ![Google Cloud](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
 ![Apigee](https://img.shields.io/badge/Apigee-MX-red?style=for-the-badge)
