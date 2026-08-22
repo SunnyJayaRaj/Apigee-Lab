@@ -1,0 +1,24 @@
+version: 2
+updates:
+  # Keep GitHub Actions versions current (checkout, cache,
+  # upload-artifact, gitleaks-action, setup-node, ...)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
+
+  # Track apigeelint version used via npx in apigee-ci.yml
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    allow:
+      - dependency-name: "apigeelint"
+    commit-message:
+      prefix: "chore(deps)"
+    labels:
+      - "dependencies"
