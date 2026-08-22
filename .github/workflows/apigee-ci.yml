@@ -66,7 +66,7 @@ jobs:
         run: ./tools/build-bundles.sh target
 
       - name: Cache npx packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.npm/_npx
           key: apigeelint-${{ env.APIGEELINT_VERSION }}
