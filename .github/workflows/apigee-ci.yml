@@ -1,4 +1,16 @@
-name: Apigee CI Pipeline (Simulation Mode)
+name: Apigee Proxy CI
+
+# Validates every proxy bundle in this monorepo before merge:
+#   1. XML well-formedness across ALL projects (design-time sources)
+#   2. OpenAPI spec sanity check
+#   3. Bundle assembly exactly as Apigee expects it (tools/build-bundles.sh)
+#   4. apigeelint (version-pinned for reproducible builds)
+#   5. Secret leak scan
+#   6. Packaged, deployable artifacts uploaded for download
+#
+# NOTE ON DEPLOYMENT: this pipeline intentionally does NOT deploy anywhere —
+# there is no live Apigee org wired up yet. See the "deployment-readiness"
+# job output for the exact steps to enable real deployments later.
 
 on:
   push:
@@ -9,56 +21,108 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APIGEELINT_VERSION: "2.85.1"
+
 jobs:
-  ci-factory:
-    name: Build, Lint & Package
+  validate-sources:
+    name: Validate XML & OpenAPI Sources
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: XML well-formedness (all projects)
+        run: |
+          echo "🔍 Checking every XML file parses..."
+          find Weather-Shield-Gateway Secure-Bank-Access \
+               Retail-Mesh-Orchestrator Shared-Flows-Governance \
+               Apigee-DevOps-Pipeline \
+               -name '*.xml' -type f -print0 | xargs -0 -n1 xmllint --noout
+          echo "✅ All XML files are well-formed."
+
+      - name: OpenAPI specs declare an openapi version
+        run: |
+          for spec in */01-API-Design/*.yaml; do
+            [ -e "$spec" ] || continue
+            grep -q '^openapi:' "$spec" \
+              || { echo "❌ $spec missing 'openapi:' root key"; exit 1; }
+            echo "✅ $spec"
+          done
+
+      - name: Assemble deployable bundles
+        run: ./tools/build-bundles.sh target
+
+      - name: Cache npx packages
+        uses: actions/cache@v4
         with:
-          node-version: "22"
+          path: ~/.npm/_npx
+          key: apigeelint-${{ env.APIGEELINT_VERSION }}
 
-      - name: Build Proxy Bundle
+      - name: Lint every bundle (apigeelint@${{ env.APIGEELINT_VERSION }})
         run: |
-          echo "🚧 Building apiproxy folder..."
-          mkdir -p apiproxy/proxies
+          status=0
+          for p in Weather-Shield-Gateway Secure-Bank-Access \
+                   Retail-Mesh-Orchestrator Apigee-DevOps-Pipeline; do
+            echo "🔍 Linting $p ..."
+            npx --yes "apigeelint@${APIGEELINT_VERSION}" \
+              -s "target/$p/apiproxy" -f table || status=1
+          done
+          exit $status
 
-          cp Apigee-DevOps-Pipeline/cicd-proxy.xml apiproxy/
-          cp Apigee-DevOps-Pipeline/05-Proxy-Wiring/proxy-endpoint-default.xml apiproxy/proxies/
-
-          echo "✅ Bundle Structure Created."
-
-      - name: Install & Run apigeelint
+      - name: Package deployable bundles
         run: |
-          npm install --global apigeelint
+          mkdir -p dist
+          for p in Weather-Shield-Gateway Secure-Bank-Access \
+                   Retail-Mesh-Orchestrator Apigee-DevOps-Pipeline; do
+            (cd "target/$p" && zip -qr "$OLDPWD/dist/$p.zip" apiproxy)
+          done
+          ls -la dist/
 
-          echo "🔍 Scanning code for errors..."
-          apigeelint -s apiproxy/ -f table
-
-      - name: Create Zip Bundle
-        run: |
-          zip -r apiproxy.zip apiproxy
-          echo "📦 Zip bundle created successfully."
-
-      - name: Upload Build Artifact
+      - name: Upload deployable artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: deployable-bundle
-          path: apiproxy.zip
+          name: apiproxy-bundles
+          path: dist/*.zip
+          retention-days: 14
 
-  cd-simulation:
-    name: Mock Deployment
-    needs: ci-factory
+  secret-scan:
+    name: Secret Leak Scan
     runs-on: ubuntu-latest
-
     steps:
-      - name: Simulate Cloud Handshake
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deployment-readiness:
+    name: Deployment Readiness (informational)
+    runs-on: ubuntu-latest
+    needs: [validate-sources, secret-scan]
+    steps:
+      - name: How to enable real deployments later
         run: |
-          echo "🔐 Authenticating with Google Cloud... [MOCKED]"
-          echo "🚀 Uploading apiproxy.zip to Organization: resonant-amulet... [MOCKED]"
-          echo "✅ Deployment Revision 12 Activated. (Simulation)"
+          cat <<'EOF'
+          ✅ All checks passed — bundles are packaged and deploy-ready.
+
+          This repo currently has NO live Apigee org attached (by design).
+          When you create a free Apigee eval org, enable real CD with:
+
+            1. Create service account + grant "Apigee Organization Admin".
+            2. Store its JSON key as GitHub secret: APIGEE_SA_KEY
+            3. Store org/project names as vars: APIGEE_ORG, APIGEE_PROJECT
+            4. Deploy with apigeecli:
+                 curl -sSfL https://raw.githubusercontent.com/apigee/apigeecli/master/download.sh | bash -
+                 export GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_GHA_CREDS_PATH
+                 apigeecli apis create bundle -f <bundle.zip> \
+                   -n <proxy-name> --org $APIGEE_ORG --token $(gcloud auth print-access-token)
+
+          Until then, artifacts from this run are fully deployable by hand
+          via UI: Apigee console → Proxy Bundles → Upload.
+          EOF
