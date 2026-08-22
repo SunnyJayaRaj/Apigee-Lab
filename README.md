@@ -41,6 +41,7 @@ Whether you're learning Apigee, exploring enterprise API management, or reviewin
 - [Project 3: Retail-Mesh-Orchestrator](#-project-3-retail-mesh-orchestrator)
 - [Project 4: Apigee-DevOps-Pipeline](#-project-4-apigee-devops-pipeline)
 - [Project 5: Shared-Flows-Governance](#-project-5-shared-flows-governance)
+- [CI Pipeline & Tooling](#-ci-pipeline--tooling)
 
 ---
 
@@ -559,6 +560,31 @@ The architecture implements a **Governance-First** approach, ensuring that globa
     * **Test 3 (Identity):** Ensure the JSON body responds with `"message": "Hello, [your-subject]!"` instead of "Guest".
 
 ---
+## 🔧 CI Pipeline & Tooling
+
+Every push and PR runs **[Apigee Proxy CI](.github/workflows/apigee-ci.yml)**, which validates all **six deployable artifacts** (5 API proxies + 1 shared flow bundle):
+
+| Check | What it does |
+|---|---|
+| XML validation | `xmllint` on every policy/proxy file across all 5 projects |
+| OpenAPI sanity | Specs must declare an `openapi:` root key |
+| Drift guard | Fails if governance mirror policies diverge from canonical sources |
+| `apigeelint` | Version-pinned (`2.85.1`) lint of every assembled bundle |
+| Secret scan | gitleaks over full history |
+| Packaging | Deployable `.zip` artifacts uploaded every run |
+
+**Policy single-source-of-truth rule:** shared policies are edited ONLY in the design-time project folders (`Weather-Shield-Gateway/02..04-*`). The copies inside `Shared-Flows-Governance/Weather-Shield-Gateway/policies/` are mirrors.
+
+```bash
+./tools/check-drift.sh                # verify mirrors match canonical (CI runs this)
+./tools/sync-governance-policies.sh   # re-mirror after editing a shared policy
+./tools/build-bundles.sh target       # assemble deployable bundles locally
+```
+
+> ℹ️ No live Apigee org is attached — bundles are validated and packaged, ready to upload by hand or wire to an eval org later (see the *Deployment Readiness* job output in any CI run).
+
+---
+
 ## 🎓 Conclusion
 
 This repository represents a practical exploration of Google Cloud Apigee through progressively advanced projects. Each project focuses on a different aspect of enterprise API Management, from building secure API proxies to implementing reusable governance and automated delivery pipelines.
