@@ -59,6 +59,9 @@ jobs:
             echo "✅ $spec"
           done
 
+      - name: Policy drift guard (canonical vs governance mirrors)
+        run: ./tools/check-drift.sh
+
       - name: Assemble deployable bundles
         run: ./tools/build-bundles.sh target
 

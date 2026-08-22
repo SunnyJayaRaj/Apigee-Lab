@@ -78,13 +78,52 @@ done
 
 # Staged so that each lintable path ends in the folder name apigeelint
 # requires:  .../apiproxy  or  .../sharedflowbundle
+#
+# Shared-Flows-Demo (governed Weather proxy) is ASSEMBLED, not copied
+# wholesale, so duplicated policies can never drift into artifacts:
+#   root xml + proxies/ + targets/ + governance-only policies
+#       <- Shared-Flows-Governance/Weather-Shield-Gateway
+#   shared policies (canonical source)
+#       <- Weather-Shield-Gateway/{02-Mediation,03-Security,04-Monetization}
+# See also: tools/check-drift.sh, tools/sync-governance-policies.sh
 
 GOV="$ROOT/Shared-Flows-Governance"
+GOV_PROXY="$GOV/Weather-Shield-Gateway"
+
+CANONICAL_POLICIES=(
+  "Fault-Quota-Failure"
+  "AM-Set-Secret-Key"
+  "Verify-JWT-Protection"
+  "Quota-Silver-Tier"
+  "Response-Cache-Standard"
+  "Service-Callout-Logging"
+  "XML-to-JSON-Conversion"
+)
 
 rm -rf "$OUT/Shared-Flows-Demo"
-mkdir -p "$OUT/Shared-Flows-Demo/apiproxy"
-cp -R "$GOV/Weather-Shield-Gateway/." "$OUT/Shared-Flows-Demo/apiproxy/"
-echo "✅ Shared-Flows-Demo -> $OUT/Shared-Flows-Demo/apiproxy ($(find "$OUT/Shared-Flows-Demo" -type f | wc -l | tr -d ' ') files, staged as-is)"
+mkdir -p "$OUT/Shared-Flows-Demo/apiproxy/proxies" \
+         "$OUT/Shared-Flows-Demo/apiproxy/targets" \
+         "$OUT/Shared-Flows-Demo/apiproxy/policies"
+
+cp "$GOV_PROXY"/*.xml "$OUT/Shared-Flows-Demo/apiproxy/"
+cp "$GOV_PROXY"/proxies/*.xml "$OUT/Shared-Flows-Demo/apiproxy/proxies/" 2>/dev/null || true
+cp "$GOV_PROXY"/targets/*.xml "$OUT/Shared-Flows-Demo/apiproxy/targets/" 2>/dev/null || true
+
+for name in "${CANONICAL_POLICIES[@]}"; do
+  found="$(find "$ROOT/Weather-Shield-Gateway/02-Mediation" \
+                "$ROOT/Weather-Shield-Gateway/03-Security" \
+                "$ROOT/Weather-Shield-Gateway/04-Monetization" \
+                -name "$name.xml" -type f 2>/dev/null | head -1)"
+  [[ -n "$found" ]] && cp "$found" "$OUT/Shared-Flows-Demo/apiproxy/policies/"
+done
+
+# Governance-only policies (referenced only by the governed variant)
+for f in "$GOV_PROXY"/policies/*.xml; do
+  base="$(basename "$f")"
+  [[ -f "$OUT/Shared-Flows-Demo/apiproxy/policies/$base" ]] || cp "$f" "$OUT/Shared-Flows-Demo/apiproxy/policies/"
+done
+
+echo "✅ Shared-Flows-Demo -> $OUT/Shared-Flows-Demo/apiproxy ($(find "$OUT/Shared-Flows-Demo" -type f | wc -l | tr -d ' ') files, shared policies from canonical source)"
 
 rm -rf "$OUT/Shared-Flow-Governance"
 mkdir -p "$OUT/Shared-Flow-Governance/sharedflowbundle"
