@@ -68,3 +68,25 @@ for proj in "${PROJECTS[@]}"; do
 
   echo "✅ $proj -> $dest ($(find "$dest" -type f | wc -l | tr -d ' ') files)"
 done
+
+# ---------------------------------------------------------------------------
+# Shared-Flows-Governance contains two pre-assembled bundles (no design-time
+# numbered layout), staged as-is:
+#   Weather-Shield-Gateway/   -> API proxy bundle that consumes the shared flow
+#   Security-Governance-v1/   -> SharedFlowBundle (deployed as shared flow)
+# ---------------------------------------------------------------------------
+
+# Staged so that each lintable path ends in the folder name apigeelint
+# requires:  .../apiproxy  or  .../sharedflowbundle
+
+GOV="$ROOT/Shared-Flows-Governance"
+
+rm -rf "$OUT/Shared-Flows-Demo"
+mkdir -p "$OUT/Shared-Flows-Demo/apiproxy"
+cp -R "$GOV/Weather-Shield-Gateway/." "$OUT/Shared-Flows-Demo/apiproxy/"
+echo "✅ Shared-Flows-Demo -> $OUT/Shared-Flows-Demo/apiproxy ($(find "$OUT/Shared-Flows-Demo" -type f | wc -l | tr -d ' ') files, staged as-is)"
+
+rm -rf "$OUT/Shared-Flow-Governance"
+mkdir -p "$OUT/Shared-Flow-Governance/sharedflowbundle"
+cp -R "$GOV/Security-Governance-v1/." "$OUT/Shared-Flow-Governance/sharedflowbundle/"
+echo "✅ Shared-Flow-Governance -> $OUT/Shared-Flow-Governance/sharedflowbundle ($(find "$OUT/Shared-Flow-Governance" -type f | wc -l | tr -d ' ') files, staged as-is)"

@@ -70,21 +70,23 @@ jobs:
 
       - name: Lint every bundle (apigeelint@${{ env.APIGEELINT_VERSION }})
         run: |
+          ARTIFACTS="Weather-Shield-Gateway:apiproxy Secure-Bank-Access:apiproxy Retail-Mesh-Orchestrator:apiproxy Apigee-DevOps-Pipeline:apiproxy Shared-Flows-Demo:apiproxy Shared-Flow-Governance:sharedflowbundle"
           status=0
-          for p in Weather-Shield-Gateway Secure-Bank-Access \
-                   Retail-Mesh-Orchestrator Apigee-DevOps-Pipeline; do
-            echo "🔍 Linting $p ..."
+          for entry in $ARTIFACTS; do
+            name="${entry%%:*}"; kind="${entry##*:}"
+            echo "🔍 Linting $name ($kind) ..."
             npx --yes "apigeelint@${APIGEELINT_VERSION}" \
-              -s "target/$p/apiproxy" -f table || status=1
+              -s "target/$name/$kind" -f table || status=1
           done
           exit $status
 
       - name: Package deployable bundles
         run: |
           mkdir -p dist
-          for p in Weather-Shield-Gateway Secure-Bank-Access \
-                   Retail-Mesh-Orchestrator Apigee-DevOps-Pipeline; do
-            (cd "target/$p" && zip -qr "$OLDPWD/dist/$p.zip" apiproxy)
+          ARTIFACTS="Weather-Shield-Gateway:apiproxy Secure-Bank-Access:apiproxy Retail-Mesh-Orchestrator:apiproxy Apigee-DevOps-Pipeline:apiproxy Shared-Flows-Demo:apiproxy Shared-Flow-Governance:sharedflowbundle"
+          for entry in $ARTIFACTS; do
+            name="${entry%%:*}"; kind="${entry##*:}"
+            (cd "target/$name" && zip -qr "$OLDPWD/dist/$name.zip" "$kind")
           done
           ls -la dist/
 
