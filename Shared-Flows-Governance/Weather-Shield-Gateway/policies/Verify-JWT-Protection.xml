@@ -7,4 +7,7 @@
   <SecretKey>
     <Value ref="private.jwt_secret_key"/>
   </SecretKey>
+  <Issuer>urn://apigee-lab-auth</Issuer>
+  <Subject>weather-app-user</Subject>
+  <Audience>weather-shield-gateway</Audience>
 </VerifyJWT>
