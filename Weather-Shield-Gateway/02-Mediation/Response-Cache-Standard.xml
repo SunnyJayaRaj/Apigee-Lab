@@ -8,4 +8,5 @@
     <Scope>Global</Scope>
     <ExpirySettings>
         <TimeoutInSec>600</TimeoutInSec> </ExpirySettings>
+    <ExcludeErrorResponse>true</ExcludeErrorResponse>
 </ResponseCache>

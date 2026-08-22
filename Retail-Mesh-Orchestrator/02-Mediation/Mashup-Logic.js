@@ -8,17 +8,17 @@ try {
     // 3. Create the Merged Object
     // CORRECTION: The mock target returns flat JSON, so we remove ".root"
     var merged = {
-        "meta": {
-            "api": "Retail Mesh v1",
-            "timestamp": new Date().toISOString()
+        meta: {
+            api: "Retail Mesh v1",
+            timestamp: new Date().toISOString()
         },
-        "product": {
-            "id": mainResponse.firstName, // Access directly
-            "name": mainResponse.lastName // Access directly
+        product: {
+            id: mainResponse.firstName, // Access directly
+            name: mainResponse.lastName // Access directly
         },
-        "availability": {
-            "location": inventoryResponse.city, // Access directly
-            "status": "In Stock"
+        availability: {
+            location: inventoryResponse.city, // Access directly
+            status: "In Stock"
         }
     };
 
@@ -28,8 +28,8 @@ try {
 
 } catch (e) {
     var error = {
-        "error": "MashupFailed",
-        "detail": e.message
+        error: "MashupFailed",
+        detail: e.message
     };
     context.setVariable("response.content", JSON.stringify(error));
     context.setVariable("response.status.code", 500);
