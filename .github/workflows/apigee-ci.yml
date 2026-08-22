@@ -94,7 +94,7 @@ jobs:
           ls -la dist/
 
       - name: Upload deployable artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: apiproxy-bundles
           path: dist/*.zip
